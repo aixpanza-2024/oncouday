@@ -1,0 +1,81 @@
+<?php
+declare(strict_types=1);
+
+$contact = [
+    'name'  => '[Trial coordinator name]',
+    'email' => '[trials@hospital.org]',
+    'phone' => '[+91 XXXXX XXXXX]',
+];
+
+return [
+    [
+        'public_id' => 'ou-1001', 'registry_id' => 'CTRI/[number]',
+        'cancer_type' => 'Breast cancer', 'cancer_slug' => 'breast',
+        'status' => 'recruiting', 'phase' => 'III',
+        'title' => '[Trial title] — targeted therapy in HER2-positive breast cancer',
+        'medicines' => '[Drug A] + [Drug B]', 'hospital' => '[Hospital name]',
+        'city' => 'Thiruvananthapuram', 'city_slug' => 'thiruvananthapuram',
+        'source' => 'doctor', 'doctor_name' => 'Dr. [Name]',
+        'updated_at' => '2026-11-09 21:00:00', 'contact' => $contact,
+    ],
+    [
+        'public_id' => 'ou-1002', 'registry_id' => 'NCT0[XXXXXXX]',
+        'cancer_type' => 'Lung cancer', 'cancer_slug' => 'lung',
+        'status' => 'not_yet_recruiting', 'phase' => 'II',
+        'title' => '[Trial title] — immunotherapy in advanced non-small cell lung cancer',
+        'medicines' => '[Drug C] vs [Drug D]', 'hospital' => '[Hospital name]',
+        'city' => 'Bengaluru', 'city_slug' => 'bengaluru',
+        'source' => 'ctgov', 'doctor_name' => null,
+        'updated_at' => '2026-11-09 02:00:00', 'contact' => $contact,
+    ],
+    [
+        'public_id' => 'ou-1003', 'registry_id' => 'NCT0[XXXXXXX]',
+        'cancer_type' => 'Head and neck cancer', 'cancer_slug' => 'head-and-neck',
+        'status' => 'recruiting', 'phase' => 'III',
+        'title' => '[Trial title] — chemoradiation in locally advanced oral cancer',
+        'medicines' => '[Drug E] + radiotherapy', 'hospital' => '[Hospital name]',
+        'city' => 'Mumbai', 'city_slug' => 'mumbai',
+        'source' => 'ctgov', 'doctor_name' => null,
+        'updated_at' => '2026-11-09 01:30:00', 'contact' => $contact,
+    ],
+    [
+        'public_id' => 'ou-1004', 'registry_id' => 'CTRI/[number]',
+        'cancer_type' => 'Cervical cancer', 'cancer_slug' => 'cervical',
+        'status' => 'recruiting', 'phase' => 'II',
+        'title' => '[Trial title] — a new combination in recurrent cervical cancer',
+        'medicines' => '[Drug F] + [Drug G]', 'hospital' => '[Hospital name]',
+        'city' => 'Kochi', 'city_slug' => 'kochi',
+        'source' => 'doctor', 'doctor_name' => 'Dr. [Name]',
+        'updated_at' => '2026-11-08 18:10:00', 'contact' => $contact,
+    ],
+    [
+        'public_id' => 'ou-1005', 'registry_id' => 'NCT0[XXXXXXX]',
+        'cancer_type' => 'Blood cancer', 'cancer_slug' => 'blood',
+        'status' => 'recruiting', 'phase' => 'I',
+        'title' => '[Trial title] — dose-finding study in relapsed lymphoma',
+        'medicines' => '[Drug H]', 'hospital' => '[Hospital name]',
+        'city' => 'New Delhi', 'city_slug' => 'new-delhi',
+        'source' => 'ctgov', 'doctor_name' => null,
+        'updated_at' => '2026-11-08 02:00:00', 'contact' => $contact,
+    ],
+    [
+        'public_id' => 'ou-1006', 'registry_id' => 'NCT0[XXXXXXX]',
+        'cancer_type' => 'Colorectal cancer', 'cancer_slug' => 'colorectal',
+        'status' => 'recruiting', 'phase' => 'III',
+        'title' => '[Trial title] — maintenance therapy in metastatic colorectal cancer',
+        'medicines' => '[Drug I] vs observation', 'hospital' => '[Hospital name]',
+        'city' => 'Chennai', 'city_slug' => 'chennai',
+        'source' => 'ctgov', 'doctor_name' => null,
+        'updated_at' => '2026-11-07 02:00:00', 'contact' => $contact,
+    ],
+    [
+        'public_id' => 'ou-1007', 'registry_id' => 'CTRI/[number]',
+        'cancer_type' => 'Breast cancer', 'cancer_slug' => 'breast',
+        'status' => 'not_yet_recruiting', 'phase' => 'II',
+        'title' => '[Trial title] — hormone therapy combination in early breast cancer',
+        'medicines' => '[Drug J] + [Drug K]', 'hospital' => '[Hospital name]',
+        'city' => 'Chennai', 'city_slug' => 'chennai',
+        'source' => 'doctor', 'doctor_name' => 'Dr. [Name]',
+        'updated_at' => '2026-11-06 11:45:00', 'contact' => $contact,
+    ],
+];

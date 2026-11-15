@@ -1,0 +1,26 @@
+Options -Indexes
+DirectoryIndex index.php
+ServerSignature Off
+
+RedirectMatch 403 ^/?(.*/)?(app|includes|database|docs)(/.*)?$
+<FilesMatch "\.(sql|md|log|ini|env|lock|json|bak|dist)$">
+    Require all denied
+</FilesMatch>
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+</IfModule>
+
+ErrorDocument 404 /oncouday/404.php
