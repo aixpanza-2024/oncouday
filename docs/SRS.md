@@ -5,8 +5,8 @@
 | **Product** | OncoUday — India's Gateway to Cancer Clinical Trials and Patient Support |
 | **Prepared by** | AIXPANZA Private Limited |
 | **Prepared for** | OncoUday |
-| **Document version** | 1.0 |
-| **Date** | 10 November 2026 |
+| **Document version** | 1.6 |
+| **Date** | 16 November 2026 |
 | **Status** | Phase 1 (website design build) complete. Phases 2–3 (database integration, APIs, admin panel, WhatsApp) planned. |
 | **Design reference** | OncoUday Website Design v2.3 (All Pages), 10 November 2026 |
 
@@ -259,11 +259,11 @@ Every foreign-key column is indexed. The listing query was checked with `EXPLAIN
 * 100% responsive from 320 px to large desktops, using the Bootstrap grid and custom breakpoints at 1400, 1200, 992, 768 and 576 px.
 * One shared content container for every page body section: `.container` = max-width 1200px, centred, side padding `clamp(20px, 5vw, 72px)`. Section backgrounds run full width; only content sits in the container. No section or inner element adds its own side indent, so all body content shares one left edge. The top bar, navigation and footer keep their own `container-xxl` layout.
 * Below 1200 px the navigation becomes an off-canvas menu with staggered link animation. Below 992 px the Explore filters become an off-canvas panel.
-* No horizontal scrolling, touch-friendly targets, and phone fields that open the numeric keyboard.
+* No horizontal scrolling, touch-friendly targets, and phone fields that open the numeric keyboard. The page body and footer clip side overflow (`overflow-x: clip`), so side-sliding AOS animations and wide decorative illustrations never widen the page. The header blur sits on a `::before` layer, so the off-canvas menu is fixed to the screen and opens full height.
 
 ### 7.2 Animation and interaction
 * AOS scroll animations on all sections (fade, zoom and flip, with staggered delays). They run once.
-* A CSS-animated illustration on every page (see Section 4).
+* A CSS-animated illustration on every page (see Section 4), shown at every screen size, including phones. Below 992 px: the Home and 404 sun is resized into the top-right corner of the hero with its floating dots beside the buttons, the Explore radar (190 px) and Privacy shield (160 px) appear centred under the hero text, and the Doctor Registration heartbeat keeps its natural scale with extra space above the title.
 * Hover transitions on cards, buttons (lift and shine), chips, links and icons. A sticky header shrinks on scroll. There is a scroll progress bar, a back-to-top button, mouse parallax on hero illustrations, count-up numbers, sequenced chat messages, modal and toast transitions, and form shake on errors.
 * `prefers-reduced-motion` is respected: animations are disabled and content shows at once.
 
@@ -330,3 +330,4 @@ Every foreign-key column is indexed. The listing query was checked with `EXPLAIN
 | 1.2 | 10 Nov 2026 | Horizontal layout fix for page body sections (heroes, all content sections, CTA bands, disclaimer strip): one shared `.container` (max-width 1200px, `margin-inline: auto`, `padding-inline: clamp(20px, 5vw, 72px)`), replacing `container-xxl` / `container-xl`. Section backgrounds stay full width. Body content shares one left edge, checked at 375, 768, 1242 (1366 at 110% zoom), 1366 and 1920px with no horizontal scroll. The top bar, navigation and footer are excluded and keep their original `container-xxl` layout. |
 | 1.3 | 15 Nov 2026 | Code comment policy: all comments removed from PHP, HTML templates, CSS, JavaScript, SVG and `.htaccess`. Short plain-language comments kept only where a request is sent to a server: form submission and the Explore filter/sort requests in `assets/js/main.js`, and the query entry point `Database::run()`. `database/schema.sql` unchanged. |
 | 1.4 | 15 Nov 2026 | Version control: Git repository initialised (branch `main`, remote `github.com/aixpanza-2024/oncouday`). `.gitignore` added for environment files and local config, logs, cache, uploads, backups and database dumps, dependency folders, and editor/OS files. |
+| 1.6 | 16 Nov 2026 | Mobile fixes. Pages no longer scroll sideways on phones: the header blur moved to `.site-header::before` (it had made the hidden off-canvas menu widen every page to about 730 px, and limited the open menu to the header height), and `#main` and `.site-footer` clip side overflow from AOS fade-left/right and from footer gutters. Animated illustrations now show on phones on every page: Home and 404 sun moved into view, Explore radar and Privacy shield un-hidden, Doctor Registration heartbeat no longer squashed. Checked at 360, 390, 768 and 1400 px with no horizontal scroll, and the desktop layout is unchanged. |

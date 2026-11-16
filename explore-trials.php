@@ -42,7 +42,7 @@ require __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                 </div>
             </div>
-            <div class="col-lg-4 d-none d-lg-flex justify-content-end">
+            <div class="col-lg-4 d-flex justify-content-center justify-content-lg-end">
                 <?php illustration('radar'); ?>
             </div>
         </div>

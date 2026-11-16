@@ -36,7 +36,7 @@ require __DIR__ . '/includes/header.php';
                 <p class="mb-3" data-aos="fade-up" data-aos-delay="80">Last updated: [Date] · Notice version <?= e(config('app.notice_version')) ?></p>
                 <div class="draft-note" data-aos="fade-up" data-aos-delay="160"><strong>Draft for layout.</strong> Final wording will be provided by OncoUday's legal advisor under the Digital Personal Data Protection Act, 2023.</div>
             </div>
-            <div class="col-lg-4 d-none d-lg-flex justify-content-end">
+            <div class="col-lg-4 d-flex justify-content-center justify-content-lg-end">
                 <?php illustration('shield'); ?>
             </div>
         </div>
