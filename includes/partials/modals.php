@@ -9,17 +9,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="small text-muted-ou mb-3">Contact the trial team to ask whether this trial is suitable for you. Please take your doctor's advice before deciding.</p>
-                <dl class="contact-list">
-                    <div><dt><i class="bi bi-person" aria-hidden="true"></i> Contact</dt><dd data-fill="name"></dd></div>
-                    <div><dt><i class="bi bi-envelope" aria-hidden="true"></i> Email</dt><dd data-fill="email"></dd></div>
-                    <div><dt><i class="bi bi-telephone" aria-hidden="true"></i> Phone</dt><dd data-fill="phone"></dd></div>
+                <dl class="contact-list mb-3">
                     <div><dt><i class="bi bi-hospital" aria-hidden="true"></i> Hospital</dt><dd data-fill="hospital"></dd></div>
                     <div><dt><i class="bi bi-upc" aria-hidden="true"></i> Trial ID</dt><dd data-fill="registry"></dd></div>
                 </dl>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-magenta" href="<?= e(url('patient-registration.php')) ?>">Get alerts for trials like this</a>
+                <p class="mb-3">To take this further, register with OncoUday. We will connect you with the trial team on WhatsApp.</p>
+                <div class="interest-choices">
+                    <a class="interest-choice interest-choice--patient" href="<?= e(url('patient-registration.php')) ?>">
+                        <i class="bi bi-person-heart" aria-hidden="true"></i>
+                        <span><strong>I'm a patient or caregiver</strong><small>Register for free</small></span>
+                        <i class="bi bi-arrow-right ms-auto" aria-hidden="true"></i>
+                    </a>
+                    <a class="interest-choice interest-choice--doctor" href="<?= e(url('doctor-registration.php')) ?>">
+                        <i class="bi bi-clipboard2-pulse" aria-hidden="true"></i>
+                        <span><strong>I'm a doctor</strong><small>Register as a doctor</small></span>
+                        <i class="bi bi-arrow-right ms-auto" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <p class="small text-muted-ou mt-3 mb-0">Please talk to your doctor before deciding to join a trial.</p>
             </div>
         </div>
     </div>

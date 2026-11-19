@@ -23,25 +23,7 @@ require __DIR__ . '/includes/header.php';
                     <a class="btn btn-magenta btn-lg-ou" href="<?= e(url('patient-registration.php')) ?>">Register as a patient</a>
                     <a class="btn btn-navy btn-lg-ou" href="<?= e(url('doctor-registration.php')) ?>">Register as a doctor</a>
                 </div>
-                <p class="small-note mt-3" data-aos="fade-up" data-aos-delay="300">Available in English, <span lang="hi">हिन्दी</span> and <span lang="ml">മലയാളം</span>. More languages coming soon.</p>
-            </div>
-
-            <div class="col-lg-5">
-                <div class="phone-chat" data-aos="zoom-in-left" data-aos-delay="150">
-                    <div class="phone-chat__head">
-                        <span class="avatar"><img src="<?= e(asset('img/logo.svg')) ?>" alt="" width="28" height="28"></span>
-                        <span><strong>OncoUday</strong><small>WhatsApp alerts</small></span>
-                        <i class="bi bi-patch-check-fill ms-auto" aria-hidden="true"></i>
-                    </div>
-                    <div class="phone-chat__body js-chat">
-                        <div class="chat-msg in">Hello [Name], thank you for registering with OncoUday. We'll message you when a trial matches your registered preferences.</div>
-                        <div class="chat-msg in"><strong>Update on your preferences</strong><br>A new trial is now open in Thiruvananthapuram.<br><span class="chat-link">oncouday.in/t/[id]</span></div>
-                        <div class="chat-msg out">Thank you! <i class="bi bi-check2-all" aria-hidden="true"></i></div>
-                        <div class="chat-typing" aria-hidden="true"><span></span><span></span><span></span></div>
-                        <p class="chat-note">Reply STOP any time to stop alerts.</p>
-                    </div>
-                    <div class="phone-chat__foot"><i class="bi bi-lock" aria-hidden="true"></i> Alerts never mention your diagnosis.</div>
-                </div>
+                <p class="live-note mt-4" data-aos="fade-up" data-aos-delay="250"><span class="live-dot" aria-hidden="true"></span>Data refreshed daily · real-time updates directly from researchers and trial teams</p>
             </div>
         </div>
 
@@ -56,20 +38,21 @@ require __DIR__ . '/includes/header.php';
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <?php partial('state-city', ['mode' => 'filter', 'prefix' => 'hs', 'wrap' => 'col-md-6 col-lg-3']); ?>
                 <div class="col-md-6 col-lg-3">
-                    <label class="form-label" for="hsCity">City</label>
-                    <select class="form-select" id="hsCity" name="city">
-                        <option value="">All cities</option>
-                        <?php foreach (content()->cities() as $c): ?>
-                            <option value="<?= e($c['slug']) ?>"><?= e($c['name']) ?></option>
+                    <label class="form-label" for="hsMonth">Recruitment start month</label>
+                    <select class="form-select" id="hsMonth" name="month">
+                        <option value="">Any month</option>
+                        <?php foreach (TrialService::monthOptions() as $val => $label): ?>
+                            <option value="<?= e($val) ?>"><?= e($label) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-8 col-lg-4">
-                    <label class="form-label" for="hsMedicine">Medicine (optional)</label>
-                    <input class="form-control" id="hsMedicine" name="q" type="search" maxlength="80" placeholder="e.g. a drug name" autocomplete="off">
+                <div class="col-md-8 col-lg-9">
+                    <label class="form-label" for="hsMedicine">Medicine or keyword</label>
+                    <input class="form-control" id="hsMedicine" name="q" type="search" maxlength="80" placeholder="e.g. drug name" autocomplete="off">
                 </div>
-                <div class="col-md-4 col-lg-2">
+                <div class="col-md-4 col-lg-3">
                     <button class="btn btn-orange w-100" type="submit"><i class="bi bi-search me-1" aria-hidden="true"></i> Search trials</button>
                 </div>
             </div>
@@ -79,7 +62,7 @@ require __DIR__ . '/includes/header.php';
             <span class="explore-banner__icon" aria-hidden="true"><i class="bi bi-radar"></i></span>
             <span class="flex-grow-1">
                 <strong>Explore all open trials</strong>
-                <small>Browse every cancer trial in India by type, city, medicine and phase</small>
+                <small>Browse every cancer trial in India by type, state, city, medicine and recruitment month</small>
             </span>
             <span class="explore-banner__arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
         </a>
@@ -141,6 +124,42 @@ require __DIR__ . '/includes/header.php';
                     </div>
                 </div>
             <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<section class="section bg-peach">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="section-title" data-aos="fade-up">Alerts arrive on WhatsApp</h2>
+                <p class="section-lead" data-aos="fade-up" data-aos-delay="80">When a trial matching your city and cancer type opens, we send a short WhatsApp message with a link to the details. Alerts never mention your diagnosis, and you can reply STOP any time.</p>
+                <div class="wa-cta" data-aos="fade-up" data-aos-delay="160">
+                    <i class="bi bi-whatsapp wa-cta__icon" aria-hidden="true"></i>
+                    <div>
+                        <strong>Prefer WhatsApp to forms?</strong>
+                        <p class="mb-2">Send us “Hi” on WhatsApp and register in the chat. No typing on the website needed.</p>
+                        <a class="btn btn-whatsapp" href="<?= e(whatsapp_chat_url()) ?>" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i> WhatsApp us</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="phone-chat" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="phone-chat__head">
+                        <span class="avatar"><img src="<?= e(asset('img/logo.png')) ?>" alt="" width="28" height="28"></span>
+                        <span><strong>OncoUday</strong><small>WhatsApp alerts</small></span>
+                        <i class="bi bi-patch-check-fill ms-auto" aria-hidden="true"></i>
+                    </div>
+                    <div class="phone-chat__body js-chat">
+                        <div class="chat-msg in">Hello [Name], thank you for registering with OncoUday. We'll message you when a trial matches your registered preferences.</div>
+                        <div class="chat-msg in"><strong>Update on your preferences</strong><br>A new trial is now open in Thiruvananthapuram.<br><span class="chat-link">oncouday.in/t/[id]</span></div>
+                        <div class="chat-msg out">Thank you! <i class="bi bi-check2-all" aria-hidden="true"></i></div>
+                        <div class="chat-typing" aria-hidden="true"><span></span><span></span><span></span></div>
+                        <p class="chat-note">Reply STOP any time to stop alerts.</p>
+                    </div>
+                    <div class="phone-chat__foot"><i class="bi bi-lock" aria-hidden="true"></i> Alerts never mention your diagnosis.</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

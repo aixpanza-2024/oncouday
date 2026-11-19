@@ -5,8 +5,8 @@
 | **Product** | OncoUday — India's Gateway to Cancer Clinical Trials and Patient Support |
 | **Prepared by** | AIXPANZA Private Limited |
 | **Prepared for** | OncoUday |
-| **Document version** | 1.6 |
-| **Date** | 16 November 2026 |
+| **Document version** | 1.9 |
+| **Date** | 18 November 2026 |
 | **Status** | Phase 1 (website design build) complete. Phases 2–3 (database integration, APIs, admin panel, WhatsApp) planned. |
 | **Design reference** | OncoUday Website Design v2.3 (All Pages), 10 November 2026 |
 
@@ -109,7 +109,7 @@ oncouday/
 │   └── illustrations/            sunrise, orbit, dna, radar, heartbeat, match, cells, shield, rings
 ├── assets/css/style.css          Design system and animations
 ├── assets/js/main.js             Behaviour and interactions
-├── assets/img/logo.svg           Logo and favicon
+├── assets/img/                  logo.png (192 px), logo-512.png (share image), favicon.png, apple-touch-icon.png
 ├── database/schema.sql           Full MySQL schema, indexes and seed data
 └── docs/SRS.md                   This document
 ```
@@ -117,7 +117,11 @@ oncouday/
 ### 3.3 Shared layout and reuse
 * `includes/header.php` renders `<head>`, top bar, language switcher and main navigation. The active nav item comes from `$page['active']`.
 * `includes/footer.php` renders the optional disclaimer strip, the footer, shared modals and the scripts.
-* The navigation and footer links come from one source (`app/data/content.php` → `navigation`, `footerColumns`).
+* The navigation and footer links come from one source (`app/data/content.php` → `navigation`, `footerColumns`). The main navigation has 5 links (Home, About Us, Explore Trials, What is a Clinical Trial, Contact Us) and 2 buttons (*I'm a doctor*, *I'm a patient*). FAQ and Advocacy Centre are linked from the footer. On desktop the footer is one row: the brand block (4 of 12 columns) and the four link columns Explore, Register, OncoUday and Legal (2 each). On tablets the link columns sit four across under the brand block, and on phones two across.
+* The top bar reads "Data refreshed daily · real-time updates directly from researchers and trial teams" (a shorter version on phones).
+* A floating *WhatsApp us* button appears on every page (bottom right, icon only on phones), and a *WhatsApp us* button sits in the footer. Both open a WhatsApp chat with "Hi" typed in, so people who find forms difficult can register in the chat. The number is `config('contact.whatsapp_chat')`: +91 80505 19549 by default, which the `WHATSAPP_CHAT_NUMBER` environment variable can override.
+* A shared State → City component (`partials/state-city`) renders a State select and a City select. The City select carries the cities grouped by state in `data-cities`. In `main.js`, `citiesFor(select, state)` returns a Promise of the cities for a state, and `fillCities()` rebuilds the City options when the state changes. On forms the City select stays disabled until a state is chosen. When the backend is connected, only `citiesFor()` changes, to fetch the list from the database over AJAX.
+* Information pages show "Information last reviewed on [date]" (partial `reviewed`, dates in `content.php` → `reviewed`): About, What is a Clinical Trial, Explore Trials, FAQ and Advocacy Centre.
 * Reusable components are rendered with `partial('name', [...])` and illustrations with `illustration('name')`. Both functions isolate variables and apply `basename()` to the name, which blocks path traversal.
 * Assets are linked through `asset()`, which appends a file-modification version for cache-busting.
 
@@ -128,9 +132,9 @@ oncouday/
 Every page has the shared header (top bar, navigation, *I'm a doctor* / *I'm a patient* buttons), the shared footer, scroll-triggered (AOS) animations and its own animated illustration.
 
 ### 4.1 Home (`index.php`) — illustration: rising sun with rotating rays
-* FR-H1 Hero with headline, intro, *Register as a patient* / *Register as a doctor* buttons and a language note.
-* FR-H2 Animated WhatsApp chat mock: messages appear one by one with a typing indicator.
-* FR-H3 Quick search (cancer type, city, medicine) that submits to Explore Trials as GET parameters.
+* FR-H1 Hero with headline, intro, *Register as a patient* / *Register as a doctor* buttons and a "Data refreshed daily · real-time updates directly from researchers and trial teams" note. The rising sun fills the right side.
+* FR-H2 *Alerts arrive on WhatsApp* section (moved out of the hero): the animated WhatsApp chat mock (messages appear one by one with a typing indicator) beside a *Prefer WhatsApp to forms?* box with a *WhatsApp us* button.
+* FR-H3 Quick search (cancer type, state, city, recruitment start month, medicine or keyword) that submits to Explore Trials as GET parameters. State and City use the shared State → City component (see 3.3).
 * FR-H4 *Explore all open trials* banner.
 * FR-H5 *Recently updated trials*: the 3 latest trials from `TrialService::recent()`, each with a *Details* link to the trial card on Explore Trials (highlighted on arrival).
 * FR-H6 *Three ways to use OncoUday*: patient, doctor running trials and doctor following trials, each with 3 steps and a CTA. The doctor CTAs preselect the registration mode.
@@ -140,7 +144,8 @@ Every page has the shared header (top bar, navigation, *I'm a doctor* / *I'm a p
 * FR-H10 FAQ preview (3 questions) and the medical disclaimer strip.
 
 ### 4.2 About Us (`about.php`) — illustration: orbit
-* Mission and vision cards, *Who OncoUday serves* (3 cards), *Built for how India communicates* (4 numbered pillars with count-up), team placeholders (3), partner logo placeholders (5) and a join CTA band.
+* Mission and vision cards (the mission mentions real-time updates directly from researchers and trial teams), *Who OncoUday serves* (3 cards), *Built for how India communicates* (4 numbered pillars with count-up) and a join CTA band. The *Hospitals and partners* logo section is removed for now (its styles are kept for when logos are supplied).
+* *The people behind OncoUday*, grouped from `content.php` → `team`: Founders (Dr Uddiptya Goswami, Founder; Dr Subhadarsini Mohapatra, Co-Founder), Medical advisor (Dr Boben Thomas) and Contributors (Uddipan Goswami, Dipanjan Narayan Chaudhary, Sayantika Sengupta, Mohammed Hashim). A member with a `photo` key shows a round photo from `assets/img/team/` (400×400 JPEG, cropped to the face); the others show initials. Photos are in place for Dr Subhadarsini Mohapatra, Dr Boben Thomas and all four contributors; Dr Uddiptya Goswami still shows initials.
 
 ### 4.3 What is a Clinical Trial (`what-is-a-clinical-trial.php`) — illustration: DNA wave of dots
 * *On this page* anchor navigation.
@@ -149,32 +154,35 @@ Every page has the shared header (top bar, navigation, *I'm a doctor* / *I'm a p
 * Six *Questions to ask your doctor* and the disclaimer strip.
 
 ### 4.4 Explore Clinical Trials (`explore-trials.php`) — illustration: radar sweep
-* FR-E1 Cancer-type chips (All + 6 featured types), keeping the other filters.
-* FR-E2 Filter panel: medicine/keyword, cancer type, city, phase (I–IV), status (Recruiting, Not yet recruiting) and *Listed by* (Doctors on OncoUday, ClinicalTrials.gov). It is a sidebar on desktop and an off-canvas panel on mobile.
-* FR-E3 Filters apply automatically on change. Keyword search waits until typing pauses. *Clear filters* resets everything.
-* FR-E4 Result count and sorting (recently updated, title, phase).
-* FR-E5 Each trial card shows cancer type, status, phase, registry ID, title, medicines, hospital, city and source.
-* FR-E6 *View enrolment contact* opens a modal with the trial contact. Values are written with `textContent`.
+* FR-E1 Cancer-type chips: All + the top 5 cancers (Breast, Lung, Head and neck, Cervical, Blood cancers) on one line. On narrow screens the row scrolls sideways instead of wrapping. The other types stay in the Cancer type filter.
+* FR-E2 Filter panel: *Medicine or keyword* (placeholder "e.g. drug name"; matches title, medicines, trial ID, cancer type, hospital and city), cancer type, state and city (shared State → City component; the server lists only the cities of the chosen state), recruitment start month (6 months back to 12 months ahead), phase (I–IV), status (Recruiting, Not yet recruiting) and *Listed by* (Doctors on OncoUday (verified), ClinicalTrials.gov). It is a sidebar on desktop and an off-canvas panel on mobile.
+* FR-E3 Filters apply automatically on change, and the page returns to the same scroll position after reloading (it no longer jumps to the top). Keyword search waits until typing pauses. Changing the state clears the city.
+* FR-E3a Checkboxes left unticked mean "no limit": with no status, phase or source ticked, all open trials are shown. *Clear filters* leaves every field blank and shows all trials.
+* FR-E4 Result count and sorting: Recently updated, Title (A–Z) and City (A–Z, then most recently updated). No location or GPS data is used.
+* FR-E5 Each trial card shows cancer type, status, phase, registry ID, a source badge (green *Verified · Added by Dr X* for doctor listings, blue *From ClinicalTrials.gov* for imported ones), title, medicines, hospital, city and state, the recruitment start ("Recruiting since Mar 2026" / "Recruitment starts Jan 2027") and "Last confirmed [date]".
+* FR-E6 *I'm interested* opens a modal with the trial title, hospital and trial ID, and two links: *I'm a patient or caregiver* (patient registration) and *I'm a doctor* (doctor registration). Trial coordinator contacts are not shown on the website. Values are written with `textContent`.
 * FR-E7 Empty state with *Clear filters* and *Get trial alerts*. Pagination at 10 per page.
-* FR-E8 Server-side validation: every GET value is checked against a whitelist (cancer and city slugs, phases, statuses, sources, sorts). Free text is trimmed, stripped of control characters and limited to 80 characters.
+* FR-E8 Server-side validation: every GET value is checked against a whitelist (cancer, state and city values, phases, statuses, sources, sorts). The month must match `YYYY-MM` and the location must fall inside India's bounds. Free text is trimmed, stripped of control characters and limited to 80 characters.
 
 ### 4.5 Doctor Registration (`doctor-registration.php`) — illustration: heartbeat line
 * FR-D1 Mode selection: *I run clinical trials* / *I don't run trials — I want to follow them*. It can be preselected with `?mode=running|following` (whitelisted).
 * FR-D2 The *After you register* panel, the consent wording and the optional cancer-types multi-select change with the chosen mode.
-* FR-D3 Fields: full name, email, WhatsApp number (+91, 10 digits, starting 6–9), hospital or clinic, city, specialty, and the cancer types to get alerts for (following mode only, optional).
+* FR-D3 Fields: full name, email, WhatsApp number (+91, 10 digits, starting 6–9), hospital or clinic, state and city (State → City component), specialty, and the cancer types to get alerts for (following mode only, optional). The consent checkbox links to the Terms for Doctors, Terms of Use, Privacy Policy and Consent Notice.
 * FR-D4 Consents: Terms for Doctors + Privacy Policy, and WhatsApp messages (both required).
 * FR-D5 Client-side validation with inline messages, a loading state and a success modal. Phase 2 will add server processing with CSRF verification. The CSRF token is already rendered.
 
 ### 4.6 Patient Registration (`patient-registration.php`) — illustration: matching lines
-* FR-P1 Age question. *No, under 18* shows the guardian notice and a required guardian-name field.
-* FR-P2 Fields: full name, email, WhatsApp number, city and cancer type (city only, never address).
+* FR-P1 *Patient's age* (required, 0–120 years). An age under 18 shows the guardian notice and a required guardian-name field.
+* FR-P2 Fields: age, full name, email, WhatsApp number, state and city (State → City component; never an address) and cancer type. The consent checkboxes link to the Consent Notice and Privacy Policy, and a note links to the Terms of Use and Medical Disclaimer. The short consent notice (v1.1) in all three languages lists age among the collected details.
 * FR-P3 Consent notice v1.0 with English / हिन्दी / മലയാളം tabs, including the Grievance Officer details.
 * FR-P4 Separate consents for platform data use and WhatsApp alerts (both required). The notice version is submitted with the form.
-* FR-P5 Assurance cards (private, discreet, stop any time) and a note that registering is not enrolment.
+* FR-P5 Assurance cards (private, discreet, stop any time), a *Find the form difficult?* box with a *WhatsApp us* button, and a note that registering is not enrolment.
+* FR-P6 The matching illustration shows two trials: *Trial A — Not a match* (grey) and *Trial B — ✓ Matched* (highlighted).
 
 ### 4.7 FAQ (`faq.php`) — illustration: floating cells
-* Category tabs: Patients & caregivers, Doctors, Privacy, About the listings. The questions are accordions.
+* The search bar sits in the centre of the hero, above the category tabs (Patients & caregivers, Doctors, Privacy, About the listings), which are also centred. The questions are accordions.
 * Live search across all categories with an empty-state message.
+* New patient questions: *The trial I like is not yet recruiting. What should I do next?* (register and we notify you on WhatsApp when it starts) and *I find the form difficult. Can I register on WhatsApp instead?*. *How often are listings updated?* now says data is refreshed daily with real-time updates from doctors and trial teams.
 * *Ask the OncoUday team directly* CTA.
 
 ### 4.8 Advocacy Centre (`advocacy-centre.php`) — illustration: turning rings
@@ -185,11 +193,24 @@ Every page has the shared header (top bar, navigation, *I'm a doctor* / *I'm a p
 * Contact form: name, email, phone (optional), *I am a* (patient, caregiver, doctor, hospital/partner, volunteer, other), and message (10–2000 characters with a counter). It includes a honeypot field and a CSRF token.
 * *Reach us directly* box, Grievance Officer box (anchor `#grievance`, 90-day resolution) and a medical-emergency note.
 
-### 4.10 Privacy Policy (`privacy-policy.php`) — illustration: shield and check
-* 13 numbered sections under the DPDP Act, 2023. A sticky contents list with scroll-spy, a *Draft for layout* notice, and a CTA to the Grievance Officer.
+### 4.10 Legal pages
+All legal pages share `partials/legal-hero` (eyebrow, title, summary, effective date and version, a *Pending legal review* note while `config('legal.review_pending')` is true, and chips linking every legal page) and `partials/legal-document` (sticky numbered contents with scroll-spy and numbered sections). Section text uses tokens that `legal_html()` fills from config: `{entity}`, `{address}`, `{jurisdiction}`, `{hosting}`, `{grievance_name|email|phone}`, `{contact_email}`, `{notice_version}` and `{link:page.php}`. The entity, address, jurisdiction, hosting provider and effective date are set in `config.php` → `legal`.
 
-### 4.11 Terms of Use (`terms-of-use.php`) and Medical Disclaimer (`medical-disclaimer.php`)
-* Draft legal pages that use the same legal layout, linked from the footer. Final wording to come from OncoUday's legal advisor.
+| Page | File | Covers |
+|---|---|---|
+| Privacy Policy (v1.1) | `privacy-policy.php` | DPDP Act 2023 and DPDP Rules 2025: Data Fiduciary and processors, itemised data per user type, purposes and lawful basis (s.6 consent, s.7 legitimate uses), consent withdrawal and Consent Managers, WhatsApp/Meta processing, sharing, cross-border transfer (s.16), security safeguards (s.8(5)), retention periods, rights (s.11–14), duties (s.15, ₹10,000 penalty), children and guardians (s.9), breach notification, Grievance Officer (90 days), changes. No location data is collected. |
+| Consent Notice (v1.1) | `consent-notice.php` | Standalone s.5 notice: itemised data and purposes for patients and for doctors, the two consents, how to withdraw, rights, complaint to the Data Protection Board, Eighth Schedule languages on request. |
+| Terms of Use | `terms-of-use.php` | User agreement under the IT Act 2000 and IT (Intermediary Guidelines) Rules 2021: what OncoUday is and is not, eligibility (18+, guardians), WhatsApp service, listings, prohibited content (Rule 3(1)(b) list plus cancer-cure claims under the Drugs and Magic Remedies Act 1954, inducements, scraping), IP and ClinicalTrials.gov attribution, no warranties, liability cap (₹1,000, statutory rights preserved), indemnity, termination, grievance (24 h / 15 days, Grievance Appellate Committee), governing law and courts, general terms. |
+| Terms for Doctors | `doctor-terms.php` | Eligibility (NMC / State Medical Council registration or authorised trial team), verification, warranties before listing (NDCT Rules 2019 / CDSCO permission, registered Ethics Committee, CTRI), permitted and prohibited listing content, weekly-check duties (7 days; hidden after 3 weeks), meaning of *Verified*, handling of patient enquiries (DPDP, EC-approved consent, ICMR 2017, GCP), following doctors, licence, removal, fees (30 days' notice), indemnity. |
+| Medical Disclaimer | `medical-disclaimer.php` | Not medical advice and no doctor–patient relationship, talk to your doctor, registering is not enrolment, risks of trials, accuracy, no endorsement (including the NLM / ClinicalTrials.gov disclaimer), translations, emergencies (112 / 108). |
+| Listing Policy | `listing-policy.php` | Sources and de-duplication, meaning of *Verified*, how listings stay current, what is and is not published (no cure claims, inducements, patient data or coordinator contacts), ordering with no paid placement, ClinicalTrials.gov attribution, reporting mistakes. |
+| Cookie Policy | `cookie-policy.php` | Table of `ou_sid`, `ou_lang`, `googtrans`, `ou_explore_y`; third-party files (Google Fonts, jsDelivr, Google Translate); no advertising or analytics cookies, so no cookie banner; how to control cookies. |
+| Grievance Redressal | `grievance-redressal.php` | Grievance Officer details, what can be raised, how to make a request and verification, response times (24 h acknowledgement, 24 h for private-information or impersonation content, 15 days for content, about 30 days for rights requests, 90 days maximum for data grievances), escalation to the Data Protection Board and the Grievance Appellate Committee. |
+
+The footer has a *Legal* column listing all eight pages, and *Grievance Officer* links point to Grievance Redressal. The contact form notes that details are used only to reply, with a link to the Privacy Policy.
+
+### 4.11 Legal review
+The documents are drafted for Indian law as it stands in November 2026. Before launch they must be reviewed by OncoUday's legal counsel, and the placeholders in `config.php` → `legal` filled in. Contact details are set: general contact info@oncouday.com and +91 80505 19549 (`contact.email`, `contact.whatsapp`); Grievance Officer Dr Uddiptya Goswami (Founder), grievance@oncouday.com, +91 87777 34849 (`contact.grievance`). Office address and working hours are still placeholders. `legal.review_pending` is now `false`, so the *Pending legal review* note is hidden on all legal pages; set it to `true` to show it again.
 
 ### 4.12 Error page (`404.php`)
 * A friendly *page not found* page with links to Home and Explore Trials. It is configured in `.htaccess`.
@@ -202,7 +223,7 @@ Every page has the shared header (top bar, navigation, *I'm a doctor* / *I'm a p
 ## 5. Data Requirements
 
 ### 5.1 Database
-`database/schema.sql` creates the `oncouday` database (InnoDB, utf8mb4_unicode_ci) with 23 tables and seed data for languages, cancer types, cities, specialties and FAQ categories.
+`database/schema.sql` creates the `oncouday` database (InnoDB, utf8mb4_unicode_ci) with 23 tables and seed data for languages, cancer types, cities (with state), specialties and FAQ categories. `cities.state` (indexed) supports the State filter, `trials.start_date` the recruitment-month filter, and `patients.age` the patient's age. Colorectal cancer is no longer a featured chip.
 
 | Group | Tables |
 |---|---|
@@ -219,6 +240,8 @@ Every page has the shared header (top bar, navigation, *I'm a doctor* / *I'm a p
 | `trials.idx_trials_listing (is_published, status, updated_at)` | Default listing and *recently updated trials* |
 | `trials.idx_trials_cancer_city (is_published, cancer_type_id, city_id, status)` | Filtering by cancer type and city |
 | `trials.ft_trials_search FULLTEXT (title, medicines_text)` | Medicine and keyword search |
+| `trials.idx_trials_start (start_date)` | Recruitment start month filter |
+| `cities.idx_cities_state (state)` | State filter |
 | `trials.idx_trials_confirm (source, status, last_confirmed_at)` | Weekly-check queue |
 | `patients.idx_patients_match (status, cancer_type_id, city_id)` | Matching a new trial to patients |
 | `doctors.idx_doctors_alerts (status, usage_mode, city_id, specialty_id)` | Alerts to following doctors |
@@ -331,3 +354,7 @@ Every foreign-key column is indexed. The listing query was checked with `EXPLAIN
 | 1.3 | 15 Nov 2026 | Code comment policy: all comments removed from PHP, HTML templates, CSS, JavaScript, SVG and `.htaccess`. Short plain-language comments kept only where a request is sent to a server: form submission and the Explore filter/sort requests in `assets/js/main.js`, and the query entry point `Database::run()`. `database/schema.sql` unchanged. |
 | 1.4 | 15 Nov 2026 | Version control: Git repository initialised (branch `main`, remote `github.com/aixpanza-2024/oncouday`). `.gitignore` added for environment files and local config, logs, cache, uploads, backups and database dumps, dependency folders, and editor/OS files. |
 | 1.6 | 16 Nov 2026 | Mobile fixes. Pages no longer scroll sideways on phones: the header blur moved to `.site-header::before` (it had made the hidden off-canvas menu widen every page to about 730 px, and limited the open menu to the header height), and `#main` and `.site-footer` clip side overflow from AOS fade-left/right and from footer gutters. Animated illustrations now show on phones on every page: Home and 404 sun moved into view, Explore radar and Privacy shield un-hidden, Doctor Registration heartbeat no longer squashed. Checked at 360, 390, 768 and 1400 px with no horizontal scroll, and the desktop layout is unchanged. |
+| 1.7 | 18 Nov 2026 | Client review changes. Navigation cut to 5 links + 2 buttons (FAQ and Advocacy Centre moved to the footer). Top bar, home hero, Explore intro, About mission and FAQ now say data is refreshed daily with real-time updates directly from researchers and trial teams. "Information last reviewed" dates on About, What is a Clinical Trial, Explore, FAQ and Advocacy Centre. *WhatsApp us* (floating button, footer, home and patient registration) opens a WhatsApp chat with "Hi". Home: WhatsApp chat mock moved from the hero to its own section; quick search gains state, city filtered by state, recruitment start month and *Medicine or keyword*. Explore: top 5 cancer chips on one line; state, city and recruitment-month filters; unticked checkboxes show all trials and *Clear filters* leaves fields blank; scroll position kept after filtering; sort by Recently updated, Title or Distance (nearest, by location or selected city); verified-doctor vs ClinicalTrials.gov badges, recruitment start and last-confirmed date on every card; *I'm interested* links to patient or doctor registration instead of showing coordinator contacts. Patient registration asks the patient's age (under 18 shows the guardian step) and the matching illustration shows Trial A (no match) and Trial B (matched). FAQ search centred, plus two new questions. About lists the founders, medical advisors and contributors. Schema: `cities.latitude/longitude` and `idx_cities_state`, `trials.start_date` and `idx_trials_start`, `patients.age`. Geolocation allowed for the site itself in `Permissions-Policy`. |
+| 1.8 | 18 Nov 2026 | New OncoUday logo (sun, three figures, cancer ribbon) from the client's file replaces the old `logo.svg` in the header, mobile menu, footer and home WhatsApp mock: `assets/img/logo.png` (192 px, transparent), `logo-512.png`, `favicon.png` (64 px) and `apple-touch-icon.png` (180 px). The favicon and Apple touch icon are linked in the shared header. Removed the line "Available in English, हिन्दी and മലയാളം. More languages coming soon." from the home hero. Navigation order: Home, About Us, Explore Trials, What is a Clinical Trial, Contact Us. |
+| 1.9 | 18 Nov 2026 | Full legal set drafted for Indian law: Privacy Policy and Consent Notice (v1.1, DPDP Act 2023 / Rules 2025), Terms of Use (IT Act and IT Rules 2021), new Terms for Doctors (NDCT Rules 2019, Ethics Committee, CTRI, ICMR 2017, Drugs and Magic Remedies Act 1954), Medical Disclaimer, new Listing Policy, new Cookie Policy and new Grievance Redressal page. Shared legal hero with effective date, version, review note and links between documents; tokens filled from `config('legal')`; footer *Legal* column; registration and contact forms link the relevant documents. Explore sort *Distance (nearest)* replaced with *City (A–Z)*; all location code removed, `Permissions-Policy` blocks geolocation again, and city coordinates are removed from content and schema. New shared State → City component on the home search, Explore filters, and patient and doctor registration, ready to switch to AJAX. *Hospitals and partners* removed from About for now. Dr Krupa Sankar removed from Medical advisors. |
+| 1.10 | 19 Nov 2026 | Footer fits on one row on desktop: brand block 4 columns, Explore, Register, OncoUday and Legal 2 columns each (offset removed). *Pending legal review* note hidden (`legal.review_pending` = `false`). Team photos added on About Us (`assets/img/team/`, 400×400 face crops) for Dr Subhadarsini Mohapatra, Dr Boben Thomas and the four contributors. Contact details set: general contact info@oncouday.com and +91 80505 19549 (also the default WhatsApp chat number); Grievance Officer Dr Uddiptya Goswami, grievance@oncouday.com, +91 87777 34849. |

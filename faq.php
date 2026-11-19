@@ -18,18 +18,20 @@ require __DIR__ . '/includes/header.php';
     <div class="container position-relative">
         <h1 class="page-title" data-aos="fade-up">What patients and doctors ask us</h1>
         <p class="lead-ou" data-aos="fade-up" data-aos-delay="100">Answers for patients, caregivers and doctors. Can't find what you need? <a href="<?= e(url('contact.php')) ?>">Contact us</a>.</p>
+        <?php partial('reviewed', ['key' => 'faq']); ?>
 
-        <div class="faq-tools" data-aos="fade-up" data-aos-delay="200">
+        <div class="faq-search faq-search--center" data-aos="fade-up" data-aos-delay="200">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <label class="visually-hidden" for="faqSearch">Search questions</label>
+            <input class="form-control js-faq-search" type="search" id="faqSearch" maxlength="60" placeholder="Search questions">
+        </div>
+
+        <div class="faq-tools" data-aos="fade-up" data-aos-delay="250">
             <div class="chip-row nav" role="tablist">
                 <?php foreach ($categories as $i => $cat): ?>
                     <button class="chip<?= $i === 0 ? ' active' : '' ?>" type="button" data-bs-toggle="pill" data-bs-target="#faq-<?= e($cat['slug']) ?>"
                             role="tab" aria-controls="faq-<?= e($cat['slug']) ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>"><?= e($cat['name']) ?></button>
                 <?php endforeach; ?>
-            </div>
-            <div class="faq-search">
-                <i class="bi bi-search" aria-hidden="true"></i>
-                <label class="visually-hidden" for="faqSearch">Search questions</label>
-                <input class="form-control js-faq-search" type="search" id="faqSearch" maxlength="60" placeholder="Search questions">
             </div>
         </div>
     </div>

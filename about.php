@@ -16,6 +16,7 @@ require __DIR__ . '/includes/header.php';
             <div class="col-lg-7">
                 <h1 class="page-title" data-aos="fade-up">Why we built OncoUday</h1>
                 <p class="lead-ou" data-aos="fade-up" data-aos-delay="100">OncoUday brings patients, caregivers and doctors together on the app India already uses every day — WhatsApp — in the languages people actually speak.</p>
+                <?php partial('reviewed', ['key' => 'about']); ?>
             </div>
             <div class="col-lg-5 d-flex justify-content-center justify-content-lg-end">
                 <?php illustration('orbit'); ?>
@@ -31,7 +32,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="mv-card mv-card--orange" data-aos="fade-right">
                     <i class="bi bi-bullseye mv-card__icon" aria-hidden="true"></i>
                     <h2>Our mission</h2>
-                    <p>To make sure no cancer patient or doctor in India misses a clinical trial simply because they have never heard about it.</p>
+                    <p>To make sure no cancer patient or doctor in India misses a clinical trial simply because they have never heard about it, with real-time updates directly from researchers and trial teams.</p>
                 </div>
             </div>
             <div class="col-md-6">
@@ -77,7 +78,7 @@ require __DIR__ . '/includes/header.php';
             ['WhatsApp-first', 'Alerts arrive in the app people already open many times a day.'],
             ['Regional languages', 'The website is available in English, Hindi and Malayalam. More languages coming soon.'],
             ['Doctors manage from chat', 'Trials are added, updated and closed in a few taps on WhatsApp.'],
-            ['Always current', 'Weekly checks with doctors and a nightly import from ClinicalTrials.gov keep the list fresh.'],
+            ['Always current', 'Data refreshed daily, with real-time updates directly from researchers and trial teams, weekly checks with doctors and a nightly import from ClinicalTrials.gov.'],
         ];
  ?>
         <div class="row g-4">
@@ -97,29 +98,26 @@ require __DIR__ . '/includes/header.php';
 <section class="section">
     <div class="container">
         <h2 class="section-title section-head" data-aos="fade-up">The people behind OncoUday</h2>
-        <?php $team = [['[Founder name]', '[Founder & role]'], ['[Medical advisor]', '[Oncologist, hospital]'], ['[Team member]', '[Patient support lead]']]; ?>
-        <div class="row g-4">
-            <?php foreach ($team as $i => [$name, $role]): ?>
-                <div class="col-md-4">
-                    <div class="team-card" data-aos="flip-left" data-aos-delay="<?= $i * 120 ?>">
-                        <div class="team-card__photo">[Photo]</div>
-                        <h3><?= e($name) ?></h3>
-                        <p class="mb-0"><?= e($role) ?></p>
+        <?php foreach (content()->team() as $group => $members): ?>
+            <h3 class="team-group" data-aos="fade-up"><?= e($group) ?></h3>
+            <div class="row g-4 mb-4">
+                <?php foreach ($members as $i => $m):
+                    $initials = implode('', array_map(static fn ($w) => mb_substr($w, 0, 1), array_slice(array_values(array_filter(explode(' ', $m['name']), static fn ($w) => $w !== 'Dr')), 0, 2)));
+                ?>
+                    <div class="<?= count($members) > 2 ? 'col-sm-6 col-lg-3' : 'col-md-6 col-lg-4' ?>">
+                        <div class="team-card" data-aos="flip-left" data-aos-delay="<?= $i * 100 ?>">
+                            <?php if (!empty($m['photo'])): ?>
+                                <img class="team-card__photo" src="<?= e(asset($m['photo'])) ?>" alt="<?= e($m['name']) ?>" width="84" height="84" loading="lazy">
+                            <?php else: ?>
+                                <div class="team-card__photo" aria-hidden="true"><?= e($initials) ?></div>
+                            <?php endif; ?>
+                            <h4><?= e($m['name']) ?></h4>
+                            <p class="mb-0"><?= e($m['role']) ?></p>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<section class="section section--tight bg-peach">
-    <div class="container">
-        <h2 class="h3 section-title section-head" data-aos="fade-up">Hospitals and partners</h2>
-        <div class="partner-grid">
-            <?php for ($i = 0; $i < 5; $i++): ?>
-                <div class="partner-logo" data-aos="zoom-in" data-aos-delay="<?= $i * 80 ?>">[Partner logo]</div>
-            <?php endfor; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 </section>
 

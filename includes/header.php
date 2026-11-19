@@ -24,7 +24,8 @@ $languages = config('app.languages');
     <meta property="og:title" content="<?= e($fullTitle) ?>">
     <meta property="og:description" content="<?= e($page['description']) ?>">
     <meta property="og:type" content="website">
-    <link rel="icon" type="image/svg+xml" href="<?= e(asset('img/logo.svg')) ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="<?= e(asset('img/favicon.png')) ?>">
+    <link rel="apple-touch-icon" href="<?= e(asset('img/apple-touch-icon.png')) ?>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +43,7 @@ $languages = config('app.languages');
 
 <div class="topbar">
     <div class="container-xxl d-flex align-items-center justify-content-between gap-3">
-        <p class="topbar-text mb-0"><span class="live-dot" aria-hidden="true"></span>Cancer clinical trials in India, refreshed every second</p>
+        <p class="topbar-text mb-0"><span class="live-dot" aria-hidden="true"></span><span class="d-none d-md-inline">Data refreshed daily · real-time updates directly from researchers and trial teams</span><span class="d-md-none">Data refreshed daily · real-time trial updates</span></p>
         <?php partial('language-switcher', ['languages' => $languages, 'class' => 'd-none d-sm-flex']); ?>
     </div>
 </div>

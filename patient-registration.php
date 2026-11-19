@@ -37,6 +37,14 @@ require __DIR__ . '/includes/header.php';
                     <?php illustration('match'); ?>
                     <p class="small mb-0">Every new trial is checked against your city and cancer type — the moment it matches, you get a WhatsApp alert.</p>
                 </div>
+                <div class="wa-cta wa-cta--compact mt-3" data-aos="fade-up" data-aos-delay="250">
+                    <i class="bi bi-whatsapp wa-cta__icon" aria-hidden="true"></i>
+                    <div>
+                        <strong>Find the form difficult?</strong>
+                        <p class="mb-2">Send us “Hi” on WhatsApp and register in the chat instead.</p>
+                        <a class="btn btn-whatsapp btn-sm" href="<?= e(whatsapp_chat_url()) ?>" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i> WhatsApp us</a>
+                    </div>
+                </div>
                 <p class="small text-muted-ou mt-3">Registering does not enrol you in a trial. Always talk to your doctor before deciding.</p>
             </div>
 
@@ -49,15 +57,14 @@ require __DIR__ . '/includes/header.php';
                     <input type="hidden" name="notice_version" value="<?= e($noticeVersion) ?>">
                     <h2 class="form-card__title">Patient registration</h2>
 
-                    <fieldset class="mb-3">
-                        <legend class="form-label">Is the patient 18 years or older?</legend>
-                        <div class="segmented">
-                            <input type="radio" class="btn-check js-age" name="is_adult" id="ageYes" value="1" checked>
-                            <label class="btn" for="ageYes">Yes</label>
-                            <input type="radio" class="btn-check js-age" name="is_adult" id="ageNo" value="0">
-                            <label class="btn" for="ageNo">No, under 18</label>
+                    <div class="mb-3 maxw-age">
+                        <label class="form-label" for="pAge">Patient's age</label>
+                        <div class="input-group has-validation">
+                            <input class="form-control js-age" id="pAge" name="age" type="number" inputmode="numeric" min="0" max="120" step="1" required>
+                            <span class="input-group-text">years</span>
+                            <div class="invalid-feedback">Please enter the patient's age (0 to 120).</div>
                         </div>
-                    </fieldset>
+                    </div>
 
                     <div class="alert-guardian js-guardian" hidden>
                         <i class="bi bi-info-circle" aria-hidden="true"></i>
@@ -90,16 +97,7 @@ require __DIR__ . '/includes/header.php';
                         </div>
                     </div>
                     <div class="row g-3 mb-1">
-                        <div class="col-sm-6">
-                            <label class="form-label" for="pCity">City</label>
-                            <select class="form-select" id="pCity" name="city" required>
-                                <option value="">Select your city</option>
-                                <?php foreach (content()->cities() as $c): ?>
-                                    <option value="<?= e($c['slug']) ?>"><?= e($c['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="invalid-feedback">Please select a city.</div>
-                        </div>
+                        <?php partial('state-city', ['mode' => 'form', 'prefix' => 'p', 'wrap' => 'col-sm-6']); ?>
                         <div class="col-sm-6">
                             <label class="form-label" for="pCancer">Cancer type</label>
                             <select class="form-select" id="pCancer" name="cancer_type" required>
@@ -111,7 +109,7 @@ require __DIR__ . '/includes/header.php';
                             <div class="invalid-feedback">Please select a cancer type.</div>
                         </div>
                     </div>
-                    <p class="form-text mb-3">City only — we never ask for your address.</p>
+                    <p class="form-text mb-3">State and city only — we never ask for your address.</p>
 
                     <div class="consent-notice">
                         <div class="consent-notice__head">
@@ -124,7 +122,7 @@ require __DIR__ . '/includes/header.php';
                         </div>
                         <div class="tab-content consent-notice__body" tabindex="0">
                             <div class="tab-pane fade show active" id="notice-en" role="tabpanel">
-                                <p>OncoUday (the Data Fiduciary) collects your name, email, WhatsApp number, city and cancer type.</p>
+                                <p>OncoUday (the Data Fiduciary) collects your name, age, email, WhatsApp number, city and cancer type.</p>
                                 <p>We use them only to tell you about clinical trials that match your city and cancer type.</p>
                                 <p>Your details are stored securely and are never shown on the website or sold.</p>
                                 <p>You can withdraw consent, stop alerts (reply STOP) or ask us to delete your data at any time.</p>
@@ -132,7 +130,7 @@ require __DIR__ . '/includes/header.php';
                                 <p class="text-muted-ou">[Final wording to be provided by OncoUday's legal advisor]</p>
                             </div>
                             <div class="tab-pane fade" id="notice-hi" role="tabpanel" lang="hi">
-                                <p>OncoUday (डेटा फ़िड्यूशियरी) आपका नाम, ईमेल, व्हाट्सऐप नंबर, शहर और कैंसर का प्रकार एकत्र करता है।</p>
+                                <p>OncoUday (डेटा फ़िड्यूशियरी) आपका नाम, आयु, ईमेल, व्हाट्सऐप नंबर, शहर और कैंसर का प्रकार एकत्र करता है।</p>
                                 <p>हम इनका उपयोग केवल आपको उन क्लिनिकल ट्रायल के बारे में बताने के लिए करते हैं जो आपके शहर और कैंसर के प्रकार से मेल खाते हैं।</p>
                                 <p>आपकी जानकारी सुरक्षित रूप से रखी जाती है और कभी भी वेबसाइट पर नहीं दिखाई जाती या बेची नहीं जाती।</p>
                                 <p>आप किसी भी समय सहमति वापस ले सकते हैं, अलर्ट बंद कर सकते हैं (STOP लिखकर भेजें) या अपना डेटा हटाने का अनुरोध कर सकते हैं।</p>
@@ -140,7 +138,7 @@ require __DIR__ . '/includes/header.php';
                                 <p class="text-muted-ou">[अंतिम शब्दावली OncoUday के कानूनी सलाहकार द्वारा दी जाएगी]</p>
                             </div>
                             <div class="tab-pane fade" id="notice-ml" role="tabpanel" lang="ml">
-                                <p>OncoUday (ഡാറ്റ ഫിഡ്യൂഷ്യറി) നിങ്ങളുടെ പേര്, ഇമെയിൽ, വാട്ട്സ്ആപ്പ് നമ്പർ, നഗരം, കാൻസർ തരം എന്നിവ ശേഖരിക്കുന്നു.</p>
+                                <p>OncoUday (ഡാറ്റ ഫിഡ്യൂഷ്യറി) നിങ്ങളുടെ പേര്, പ്രായം, ഇമെയിൽ, വാട്ട്സ്ആപ്പ് നമ്പർ, നഗരം, കാൻസർ തരം എന്നിവ ശേഖരിക്കുന്നു.</p>
                                 <p>നിങ്ങളുടെ നഗരത്തിനും കാൻസർ തരത്തിനും യോജിക്കുന്ന ക്ലിനിക്കൽ ട്രയലുകളെക്കുറിച്ച് അറിയിക്കാൻ മാത്രമാണ് ഞങ്ങൾ ഇവ ഉപയോഗിക്കുന്നത്.</p>
                                 <p>നിങ്ങളുടെ വിവരങ്ങൾ സുരക്ഷിതമായി സൂക്ഷിക്കുന്നു; അവ ഒരിക്കലും വെബ്സൈറ്റിൽ കാണിക്കുകയോ വിൽക്കുകയോ ചെയ്യില്ല.</p>
                                 <p>എപ്പോൾ വേണമെങ്കിലും സമ്മതം പിൻവലിക്കാനും അലേർട്ടുകൾ നിർത്താനും (STOP എന്ന് മറുപടി നൽകുക) ഡാറ്റ നീക്കം ചെയ്യാൻ ആവശ്യപ്പെടാനും നിങ്ങൾക്ക് കഴിയും.</p>
@@ -152,12 +150,13 @@ require __DIR__ . '/includes/header.php';
 
                     <div class="form-check mt-3">
                         <input class="form-check-input" type="checkbox" id="pConsent" name="consent_platform" value="1" required>
-                        <label class="form-check-label" for="pConsent">I have read the notice and agree that OncoUday may store and use these details to match me with clinical trials.</label>
+                        <label class="form-check-label" for="pConsent">I have read the <a href="<?= e(url('consent-notice.php')) ?>#patients" target="_blank" rel="noopener">Consent Notice</a> and agree that OncoUday may store and use these details to match me with clinical trials, as set out in the <a href="<?= e(url('privacy-policy.php')) ?>" target="_blank" rel="noopener">Privacy Policy</a>.</label>
                     </div>
-                    <div class="form-check mb-4">
+                    <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="pWa" name="consent_whatsapp" value="1" required>
                         <label class="form-check-label" for="pWa">I agree to receive trial alerts on WhatsApp. I can reply STOP at any time.</label>
                     </div>
+                    <p class="form-text mb-4">By registering you also accept the <a href="<?= e(url('terms-of-use.php')) ?>" target="_blank" rel="noopener">Terms of Use</a> and the <a href="<?= e(url('medical-disclaimer.php')) ?>" target="_blank" rel="noopener">Medical Disclaimer</a>. Registering does not enrol you in a trial.</p>
 
                     <button class="btn btn-magenta w-100 btn-submit" type="submit">Register for trial alerts</button>
                     <p class="text-center small mt-3 mb-0">Are you a doctor? <a href="<?= e(url('doctor-registration.php')) ?>">Register here</a></p>

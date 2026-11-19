@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS cities (
   is_active   TINYINT(1)   NOT NULL DEFAULT 1,
   PRIMARY KEY (id),
   UNIQUE KEY uq_cities_slug (slug),
-  KEY idx_cities_active_name (is_active, name)
+  KEY idx_cities_active_name (is_active, name),
+  KEY idx_cities_state (state)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS cancer_types (
@@ -140,6 +141,7 @@ CREATE TABLE IF NOT EXISTS patients (
   whatsapp_hash     CHAR(64)       NOT NULL,
   city_id           INT UNSIGNED   NOT NULL,
   cancer_type_id    INT UNSIGNED   NOT NULL,
+  age               TINYINT UNSIGNED NULL,
   is_adult          TINYINT(1)     NOT NULL DEFAULT 1,
   preferred_lang    VARCHAR(5)     NOT NULL DEFAULT 'en',
   status            ENUM('pending','active','stopped','deleted') NOT NULL DEFAULT 'pending',
@@ -197,6 +199,7 @@ CREATE TABLE IF NOT EXISTS trials (
   enrolment_contact_name  VARCHAR(120) NULL,
   enrolment_contact_email VARCHAR(160) NULL,
   enrolment_contact_phone VARCHAR(30)  NULL,
+  start_date              DATE         NULL,                   -- recruitment start, used by the month filter
   is_published            TINYINT(1)   NOT NULL DEFAULT 1,
   last_confirmed_at       DATETIME     NULL,                   -- weekly WhatsApp check
   ctgov_synced_at         DATETIME     NULL,                   -- nightly import
@@ -210,6 +213,7 @@ CREATE TABLE IF NOT EXISTS trials (
   KEY idx_trials_cancer_city (is_published, cancer_type_id, city_id, status),
   KEY idx_trials_city (city_id, status),
   KEY idx_trials_phase (phase),
+  KEY idx_trials_start (start_date),
   KEY idx_trials_source (source),
   KEY idx_trials_registry (registry_id),
   KEY idx_trials_doctor (added_by_doctor_id),
@@ -421,7 +425,7 @@ INSERT IGNORE INTO cancer_types (name, slug, chip_label, is_featured, sort_order
   ('Head and neck cancer', 'head-and-neck', 'Head and neck', 1, 3),
   ('Cervical cancer', 'cervical', 'Cervical', 1, 4),
   ('Blood cancers', 'blood', 'Blood cancers', 1, 5),
-  ('Colorectal cancer', 'colorectal', 'Colorectal', 1, 6),
+  ('Colorectal cancer', 'colorectal', 'Colorectal', 0, 6),
   ('Ovarian cancer', 'ovarian', 'Ovarian', 0, 7),
   ('Prostate cancer', 'prostate', 'Prostate', 0, 8),
   ('Stomach cancer', 'stomach', 'Stomach', 0, 9),

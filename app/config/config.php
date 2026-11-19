@@ -9,7 +9,16 @@ return [
         'data_source'  => getenv('APP_DATA_SOURCE') ?: 'sample',
         'default_lang' => 'en',
         'languages'    => ['en' => 'English', 'hi' => 'हिन्दी', 'ml' => 'മലയാളം'],
-        'notice_version' => '1.0',
+        'notice_version' => '1.1',
+    ],
+
+    'legal' => [
+        'entity'         => '[OncoUday legal entity name]',
+        'address'        => '[Registered office address]',
+        'jurisdiction'   => '[City, State]',
+        'hosting'        => '[Hosting provider, India]',
+        'effective'      => '2026-11-18',
+        'review_pending' => false,
     ],
 
     'db' => [
@@ -22,14 +31,15 @@ return [
     ],
 
     'contact' => [
-        'email'     => '[contact@oncouday.in]',
-        'whatsapp'  => '[+91 XXXXX XXXXX]',
+        'email'     => 'info@oncouday.com',
+        'whatsapp'  => '+91 80505 19549',
+        'whatsapp_chat' => getenv('WHATSAPP_CHAT_NUMBER') ?: '918050519549',
         'address'   => '[Office address]',
         'hours'     => '[Working hours]',
         'grievance' => [
-            'name'  => '[Grievance Officer name]',
-            'email' => '[grievance@oncouday.in]',
-            'phone' => '[Phone number]',
+            'name'  => 'Dr Uddiptya Goswami',
+            'email' => 'grievance@oncouday.com',
+            'phone' => '+91 87777 34849',
         ],
     ],
 

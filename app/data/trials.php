@@ -1,12 +1,6 @@
 <?php
 declare(strict_types=1);
 
-$contact = [
-    'name'  => '[Trial coordinator name]',
-    'email' => '[trials@hospital.org]',
-    'phone' => '[+91 XXXXX XXXXX]',
-];
-
 return [
     [
         'public_id' => 'ou-1001', 'registry_id' => 'CTRI/[number]',
@@ -16,7 +10,8 @@ return [
         'medicines' => '[Drug A] + [Drug B]', 'hospital' => '[Hospital name]',
         'city' => 'Thiruvananthapuram', 'city_slug' => 'thiruvananthapuram',
         'source' => 'doctor', 'doctor_name' => 'Dr. [Name]',
-        'updated_at' => '2026-11-09 21:00:00', 'contact' => $contact,
+        'updated_at' => '2026-11-09 21:00:00',
+        'start_date' => '2026-03-01', 'last_confirmed' => '2026-11-16 10:20:00',
     ],
     [
         'public_id' => 'ou-1002', 'registry_id' => 'NCT0[XXXXXXX]',
@@ -26,7 +21,8 @@ return [
         'medicines' => '[Drug C] vs [Drug D]', 'hospital' => '[Hospital name]',
         'city' => 'Bengaluru', 'city_slug' => 'bengaluru',
         'source' => 'ctgov', 'doctor_name' => null,
-        'updated_at' => '2026-11-09 02:00:00', 'contact' => $contact,
+        'updated_at' => '2026-11-09 02:00:00',
+        'start_date' => '2027-01-05', 'last_confirmed' => '2026-11-18 02:00:00',
     ],
     [
         'public_id' => 'ou-1003', 'registry_id' => 'NCT0[XXXXXXX]',
@@ -36,7 +32,8 @@ return [
         'medicines' => '[Drug E] + radiotherapy', 'hospital' => '[Hospital name]',
         'city' => 'Mumbai', 'city_slug' => 'mumbai',
         'source' => 'ctgov', 'doctor_name' => null,
-        'updated_at' => '2026-11-09 01:30:00', 'contact' => $contact,
+        'updated_at' => '2026-11-09 01:30:00',
+        'start_date' => '2026-05-12', 'last_confirmed' => '2026-11-18 02:00:00',
     ],
     [
         'public_id' => 'ou-1004', 'registry_id' => 'CTRI/[number]',
@@ -46,7 +43,8 @@ return [
         'medicines' => '[Drug F] + [Drug G]', 'hospital' => '[Hospital name]',
         'city' => 'Kochi', 'city_slug' => 'kochi',
         'source' => 'doctor', 'doctor_name' => 'Dr. [Name]',
-        'updated_at' => '2026-11-08 18:10:00', 'contact' => $contact,
+        'updated_at' => '2026-11-08 18:10:00',
+        'start_date' => '2026-08-20', 'last_confirmed' => '2026-11-14 09:05:00',
     ],
     [
         'public_id' => 'ou-1005', 'registry_id' => 'NCT0[XXXXXXX]',
@@ -56,7 +54,8 @@ return [
         'medicines' => '[Drug H]', 'hospital' => '[Hospital name]',
         'city' => 'New Delhi', 'city_slug' => 'new-delhi',
         'source' => 'ctgov', 'doctor_name' => null,
-        'updated_at' => '2026-11-08 02:00:00', 'contact' => $contact,
+        'updated_at' => '2026-11-08 02:00:00',
+        'start_date' => '2026-06-01', 'last_confirmed' => '2026-11-18 02:00:00',
     ],
     [
         'public_id' => 'ou-1006', 'registry_id' => 'NCT0[XXXXXXX]',
@@ -66,7 +65,8 @@ return [
         'medicines' => '[Drug I] vs observation', 'hospital' => '[Hospital name]',
         'city' => 'Chennai', 'city_slug' => 'chennai',
         'source' => 'ctgov', 'doctor_name' => null,
-        'updated_at' => '2026-11-07 02:00:00', 'contact' => $contact,
+        'updated_at' => '2026-11-07 02:00:00',
+        'start_date' => '2026-02-15', 'last_confirmed' => '2026-11-18 02:00:00',
     ],
     [
         'public_id' => 'ou-1007', 'registry_id' => 'CTRI/[number]',
@@ -76,6 +76,7 @@ return [
         'medicines' => '[Drug J] + [Drug K]', 'hospital' => '[Hospital name]',
         'city' => 'Chennai', 'city_slug' => 'chennai',
         'source' => 'doctor', 'doctor_name' => 'Dr. [Name]',
-        'updated_at' => '2026-11-06 11:45:00', 'contact' => $contact,
+        'updated_at' => '2026-11-06 11:45:00',
+        'start_date' => '2026-12-01', 'last_confirmed' => '2026-11-12 17:40:00',
     ],
 ];

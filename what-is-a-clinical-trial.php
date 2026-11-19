@@ -17,6 +17,7 @@ require __DIR__ . '/includes/header.php';
             <div class="col-lg-7">
                 <h1 class="page-title" data-aos="fade-up">What is a clinical trial?</h1>
                 <p class="lead-ou" data-aos="fade-up" data-aos-delay="100">A clinical trial is a carefully planned research study in people. It tests whether a new medicine, combination or approach is safe and works better than the treatment available today.</p>
+                <?php partial('reviewed', ['key' => 'what-is']); ?>
             </div>
             <div class="col-lg-5">
                 <nav class="on-this-page" aria-label="On this page" data-aos="fade-left" data-aos-delay="150">

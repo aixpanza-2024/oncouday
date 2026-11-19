@@ -17,6 +17,7 @@ require __DIR__ . '/includes/header.php';
             <div class="col-lg-6">
                 <h1 class="page-title" data-aos="fade-up">Informed patients make confident choices</h1>
                 <p class="lead-ou" data-aos="fade-up" data-aos-delay="100">Plain-language guides, your rights as a trial participant, and ways to get support — for patients, caregivers and families.</p>
+                <?php partial('reviewed', ['key' => 'advocacy']); ?>
             </div>
             <div class="col-lg-6">
                 <div class="row g-3 pillar-cards">

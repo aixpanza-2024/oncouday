@@ -238,43 +238,101 @@
     }
 
     function initAgeToggle() {
-        var radios = $$('.js-age');
-        if (!radios.length) { return; }
+        var age = $('.js-age');
+        if (!age) { return; }
         var guardianInput = $('#pGuardian');
         var nameLabel = $('.js-name-label');
         function apply() {
-            var minor = $('#ageNo') && $('#ageNo').checked;
+            var value = age.value.trim();
+            var minor = value !== '' && Number(value) < 18;
             $$('.js-guardian').forEach(function (el) { el.hidden = !minor; });
-            if (guardianInput) { guardianInput.required = !!minor; }
+            if (guardianInput) { guardianInput.required = minor; }
             if (nameLabel) { nameLabel.textContent = minor ? "Patient's full name" : 'Full name'; }
         }
-        radios.forEach(function (r) { r.addEventListener('change', apply); });
-        var form = radios[0].form;
-        if (form) { form.addEventListener('ou:reset', function () { setTimeout(apply, 0); }); }
+        age.addEventListener('input', apply);
+        if (age.form) { age.form.addEventListener('ou:reset', function () { setTimeout(apply, 0); }); }
         apply();
     }
 
+    function citiesFor(city, state) {
+        var map = {};
+        try { map = JSON.parse(city.getAttribute('data-cities') || '{}'); } catch (err) { }
+        if (state) { return Promise.resolve(map[state] || []); }
+        var all = [];
+        Object.keys(map).forEach(function (k) { all = all.concat(map[k]); });
+        all.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        return Promise.resolve(all);
+    }
+
+    function fillCities(city, state) {
+        var isForm = city.getAttribute('data-mode') === 'form';
+        var keep = city.value;
+        return (isForm && !state ? Promise.resolve([]) : citiesFor(city, state)).then(function (list) {
+            var placeholder = isForm
+                ? (state ? 'Select your city' : 'Select a state first')
+                : (state ? 'All cities in ' + state : 'All cities');
+            city.innerHTML = '';
+            city.appendChild(new Option(placeholder, ''));
+            list.forEach(function (c) { city.appendChild(new Option(c.name, c.slug)); });
+            city.value = list.some(function (c) { return c.slug === keep; }) ? keep : '';
+            if (isForm) { city.disabled = !state; }
+        });
+    }
+
+    function initStateCity() {
+        $$('.js-state').forEach(function (state) {
+            var city = $('.js-city', state.form || document);
+            if (!city) { return; }
+            if (city.getAttribute('data-mode') === 'form') { fillCities(city, state.value); }
+            state.addEventListener('change', function () { fillCities(city, state.value); });
+            if (state.form) {
+                state.form.addEventListener('ou:reset', function () { setTimeout(function () { fillCities(city, state.value); }, 0); });
+            }
+        });
+    }
+
     function initExploreFilters() {
+        var key = 'ou_explore_y';
+        try {
+            var saved = sessionStorage.getItem(key);
+            if (saved !== null) {
+                sessionStorage.removeItem(key);
+                document.documentElement.style.scrollBehavior = 'auto';
+                window.scrollTo(0, parseInt(saved, 10) || 0);
+                document.documentElement.style.scrollBehavior = '';
+            }
+        } catch (err) { }
+
+        function send(form) {
+            try { sessionStorage.setItem(key, String(window.scrollY)); } catch (err) { }
+            form.requestSubmit ? form.requestSubmit() : form.submit();
+        }
+
         var form = $('.js-filter-form');
         if (form) {
             var timer;
             // Any filter change reloads the page so the server can send back the matching trials.
             form.addEventListener('change', function (e) {
                 if (e.target.name === 'q') { return; }
-                form.requestSubmit ? form.requestSubmit() : form.submit();
+                if (e.target.name === 'state') {
+                    var city = $('select[name=city]', form);
+                    if (city) { city.value = ''; }
+                }
+                send(form);
             });
             var q = $('input[name=q]', form);
             if (q) {
                 // Wait until the user stops typing before asking the server, so we don't send a request on every key.
                 q.addEventListener('input', function () {
                     clearTimeout(timer);
-                    timer = setTimeout(function () { form.requestSubmit ? form.requestSubmit() : form.submit(); }, 700);
+                    timer = setTimeout(function () { send(form); }, 700);
                 });
             }
         }
+
         var sort = $('.js-sort-form select');
         // Changing the sort order asks the server for the same results in the new order.
-        if (sort) { sort.addEventListener('change', function () { sort.form.submit(); }); }
+        if (sort) { sort.addEventListener('change', function () { send(sort.form); }); }
     }
 
     function initEnrolment() {
@@ -283,7 +341,7 @@
         document.addEventListener('click', function (e) {
             var btn = e.target.closest('.js-enrolment');
             if (!btn || !window.bootstrap) { return; }
-            ['title', 'cancer', 'name', 'email', 'phone', 'hospital', 'registry'].forEach(function (key) {
+            ['title', 'cancer', 'hospital', 'registry'].forEach(function (key) {
                 var target = $('[data-fill=' + key + ']', modal);
                 if (target) { target.textContent = btn.getAttribute('data-' + key) || '—'; }
             });
@@ -356,6 +414,7 @@
         initDoctorMode();
         initMultiSelect();
         initAgeToggle();
+        initStateCity();
         initExploreFilters();
         initEnrolment();
         initFaqSearch();

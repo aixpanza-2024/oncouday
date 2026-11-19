@@ -5,10 +5,10 @@ final class MysqlTrialRepository implements TrialRepositoryInterface
 {
     private const SELECT = <<<SQL
         SELECT t.public_id, t.registry_id, t.title, t.phase, t.status, t.source,
-               t.medicines_text AS medicines, t.updated_at,
-               t.enrolment_contact_name, t.enrolment_contact_email, t.enrolment_contact_phone,
+               t.medicines_text AS medicines, t.updated_at, t.start_date,
+               COALESCE(t.last_confirmed_at, t.ctgov_synced_at, t.updated_at) AS last_confirmed,
                ct.name AS cancer_type, ct.slug AS cancer_slug,
-               c.name  AS city, c.slug AS city_slug,
+               c.name  AS city, c.slug AS city_slug, c.state,
                h.name  AS hospital,
                d.full_name AS doctor_name
           FROM trials t
@@ -18,19 +18,20 @@ final class MysqlTrialRepository implements TrialRepositoryInterface
           LEFT JOIN doctors d   ON d.id = t.added_by_doctor_id
         SQL;
 
+    private const OPEN = "t.status IN ('recruiting','not_yet_recruiting')";
+
     private const SORTS = [
         'recent' => 't.updated_at DESC, t.id DESC',
         'title'  => 't.title ASC',
-        'phase'  => 't.phase DESC, t.updated_at DESC',
+        'city'   => 'c.name ASC, t.updated_at DESC',
     ];
 
     public function recent(int $limit): array
     {
-        $sql = self::SELECT . "
-         WHERE t.is_published = 1
-           AND t.status IN ('recruiting','not_yet_recruiting')
+        $sql = self::SELECT . '
+         WHERE t.is_published = 1 AND ' . self::OPEN . '
          ORDER BY t.updated_at DESC
-         LIMIT :limit";
+         LIMIT :limit';
 
         return array_map([$this, 'map'], Database::fetchAll($sql, ['limit' => max(1, $limit)]));
     }
@@ -38,6 +39,7 @@ final class MysqlTrialRepository implements TrialRepositoryInterface
     public function search(array $filters, int $limit, int $offset): array
     {
         [$where, $params] = $this->buildWhere($filters);
+
         $order = self::SORTS[$filters['sort'] ?? 'recent'] ?? self::SORTS['recent'];
 
         $sql = self::SELECT . " WHERE {$where} ORDER BY {$order} LIMIT :limit OFFSET :offset";
@@ -67,9 +69,22 @@ final class MysqlTrialRepository implements TrialRepositoryInterface
             $where[] = 'ct.slug = :cancer';
             $params['cancer'] = $f['cancer'];
         }
+        if (!empty($f['state'])) {
+            $where[] = 'c.state = :state';
+            $params['state'] = $f['state'];
+        }
         if (!empty($f['city'])) {
             $where[] = 'c.slug = :city';
             $params['city'] = $f['city'];
+        }
+        if (!empty($f['month'])) {
+            $from = $f['month'] . '-01';
+            $where[] = 't.start_date >= :mfrom AND t.start_date < :mto';
+            $params['mfrom'] = $from;
+            $params['mto']   = date('Y-m-d', strtotime($from . ' +1 month'));
+        }
+        if (empty($f['status'])) {
+            $where[] = self::OPEN;
         }
 
         foreach (['phases' => 't.phase', 'status' => 't.status', 'source' => 't.source'] as $key => $column) {
@@ -111,11 +126,6 @@ final class MysqlTrialRepository implements TrialRepositoryInterface
 
     private function map(array $row): array
     {
-        $row['contact'] = [
-            'name'  => $row['enrolment_contact_name'] ?? '',
-            'email' => $row['enrolment_contact_email'] ?? '',
-            'phone' => $row['enrolment_contact_phone'] ?? '',
-        ];
         $row['phase'] = str_replace('PHASE_', '', (string) $row['phase']);
         return $row;
     }

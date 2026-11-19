@@ -101,16 +101,7 @@ require __DIR__ . '/includes/header.php';
                         <div class="invalid-feedback">Please enter your hospital or clinic.</div>
                     </div>
                     <div class="row g-3 mb-3">
-                        <div class="col-sm-6">
-                            <label class="form-label" for="dCity">City</label>
-                            <select class="form-select" id="dCity" name="city" required>
-                                <option value="">Select city</option>
-                                <?php foreach (content()->cities() as $c): ?>
-                                    <option value="<?= e($c['slug']) ?>"><?= e($c['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="invalid-feedback">Please select your city.</div>
-                        </div>
+                        <?php partial('state-city', ['mode' => 'form', 'prefix' => 'd', 'wrap' => 'col-sm-6']); ?>
                         <div class="col-sm-6">
                             <label class="form-label" for="dSpecialty">Specialty</label>
                             <select class="form-select" id="dSpecialty" name="specialty" required>
@@ -143,7 +134,7 @@ require __DIR__ . '/includes/header.php';
                     <div class="consent-box">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="dTerms" name="consent_terms" value="1" required>
-                            <label class="form-check-label" for="dTerms">I agree to the <a href="<?= e(url('terms-of-use.php')) ?>">Terms for Doctors</a> and the <a href="<?= e(url('privacy-policy.php')) ?>">Privacy Policy</a>.</label>
+                            <label class="form-check-label" for="dTerms">I agree to the <a href="<?= e(url('doctor-terms.php')) ?>" target="_blank" rel="noopener">Terms for Doctors</a>, the <a href="<?= e(url('terms-of-use.php')) ?>" target="_blank" rel="noopener">Terms of Use</a> and the <a href="<?= e(url('privacy-policy.php')) ?>" target="_blank" rel="noopener">Privacy Policy</a>, and I have read the <a href="<?= e(url('consent-notice.php')) ?>#doctors" target="_blank" rel="noopener">Consent Notice</a>.</label>
                         </div>
                         <div class="form-check mb-0">
                             <input class="form-check-input" type="checkbox" id="dWa" name="consent_whatsapp" value="1" required>

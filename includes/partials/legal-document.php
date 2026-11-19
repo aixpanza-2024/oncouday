@@ -19,7 +19,7 @@ $cta ??= null;
                     <?php foreach ($sections as $i => $s): ?>
                         <section class="legal-item" id="<?= e($s['id']) ?>" data-aos="fade-up">
                             <h2><span><?= $i + 1 ?>.</span> <?= e($s['title']) ?></h2>
-                            <?= $s['html'] ?>
+                            <?= legal_html($s['html']) ?>
                         </section>
                     <?php endforeach; ?>
 

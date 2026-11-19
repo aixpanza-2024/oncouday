@@ -66,6 +66,7 @@ require __DIR__ . '/includes/header.php';
                             <div class="invalid-feedback">Please write a message (at least 10 characters).</div>
                         </div>
                     </div>
+                    <p class="form-text mt-3 mb-0">We use your details only to reply to you. See our <a href="<?= e(url('privacy-policy.php')) ?>">Privacy Policy</a>.</p>
                     <button class="btn btn-navy mt-4 px-4 btn-submit" type="submit"><i class="bi bi-send me-2" aria-hidden="true"></i>Send message</button>
                 </form>
             </div>
@@ -89,7 +90,7 @@ require __DIR__ . '/includes/header.php';
                         <div><dt>Email</dt><dd><?= e($grievance['email']) ?></dd></div>
                         <div><dt>Phone</dt><dd><?= e($grievance['phone']) ?></dd></div>
                     </dl>
-                    <p class="small mb-0">We aim to resolve every grievance within 90 days.</p>
+                    <p class="small mb-0">We acknowledge complaints within 24 hours and resolve data grievances within 90 days at most. <a class="text-white" href="<?= e(url('grievance-redressal.php')) ?>">How grievances are handled</a></p>
                 </div>
 
                 <div class="emergency-note" data-aos="fade-left" data-aos-delay="200">

@@ -17,12 +17,13 @@ $showDisclaimer ??= false;
 <footer class="site-footer">
     <div class="container-xxl">
         <div class="row g-5">
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                 <a class="footer-brand" href="<?= e(url('index.php')) ?>">
-                    <span class="footer-logo"><img src="<?= e(asset('img/logo.svg')) ?>" alt="" width="40" height="40"></span>
+                    <span class="footer-logo"><img src="<?= e(asset('img/logo.png')) ?>" alt="" width="40" height="40"></span>
                     <span class="brand-name">Onco<span>Uday</span></span>
                 </a>
                 <p class="footer-tagline">India's gateway to cancer clinical trials and patient support.</p>
+                <a class="btn btn-whatsapp btn-sm mb-3" href="<?= e(whatsapp_chat_url()) ?>" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i> WhatsApp us</a>
                 <ul class="social-list list-unstyled d-flex gap-2 mb-0">
                     <?php foreach (config('social') as $s): ?>
                         <li><a href="<?= e($s['url']) ?>" aria-label="<?= e($s['label']) ?>"><i class="bi bi-<?= e($s['icon']) ?>" aria-hidden="true"></i></a></li>
@@ -30,7 +31,7 @@ $showDisclaimer ??= false;
                 </ul>
             </div>
             <?php foreach (content()->footerColumns() as $heading => $links): ?>
-                <div class="col-6 col-md-4 col-lg-2<?= $heading === 'Explore' ? ' offset-lg-1' : '' ?>">
+                <div class="col-6 col-md-3 col-lg-2">
                     <h2 class="footer-heading"><?= e($heading) ?></h2>
                     <ul class="list-unstyled footer-links">
                         <?php foreach ($links as $link): ?>
@@ -42,15 +43,21 @@ $showDisclaimer ??= false;
         </div>
 
         <div class="footer-bottom">
+            <?php /* Old: source note moved to explore-trials.php (below the results)
             <p>OncoUday shares trial information only and does not give medical advice. Some listings come from ClinicalTrials.gov, a service of the U.S. National Library of Medicine, and are labelled with their source.</p>
+            */ ?>
             <div class="d-flex flex-wrap justify-content-between gap-2">
                 <span>&copy; <?= e(date('Y')) ?> OncoUday. All rights reserved.</span>
-                <a href="<?= e(url('contact.php')) ?>#grievance">Grievance Officer</a>
+                <span>Designed &amp; developed by <strong class="text-white">AIXPANZA</strong>, technology partner</span>
+                <a href="<?= e(url('grievance-redressal.php')) ?>">Grievance Officer</a>
             </div>
         </div>
     </div>
 </footer>
 
+<a href="<?= e(whatsapp_chat_url()) ?>" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp us">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i><span>WhatsApp us</span>
+</a>
 <a href="#main" class="back-to-top" aria-label="Back to top"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>
 
 <?php partial('modals'); ?>

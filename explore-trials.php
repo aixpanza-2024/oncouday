@@ -5,7 +5,7 @@ require __DIR__ . '/app/bootstrap.php';
 $page = [
     'title'       => 'Explore Clinical Trials',
     'active'      => 'explore',
-    'description' => 'Search active cancer clinical trials across India by cancer type, city, medicine and phase. Added by doctors and refreshed every night from ClinicalTrials.gov.',
+    'description' => 'Search active cancer clinical trials across India by cancer type, state, city, medicine and recruitment month. Data refreshed daily, with real-time updates from researchers and trial teams.',
 ];
 
 $filters = trials()->filtersFromRequest();
@@ -15,7 +15,9 @@ $filterUrl = static function (array $changes) use ($filters): string {
     $query = [
         'f'      => 1,
         'cancer' => $filters['cancer'],
+        'state'  => $filters['state'],
         'city'   => $filters['city'],
+        'month'  => $filters['month'],
         'q'      => $filters['q'],
         'phase'  => $filters['phases'],
         'status' => $filters['status'],
@@ -34,8 +36,8 @@ require __DIR__ . '/includes/header.php';
         <div class="row align-items-center g-4">
             <div class="col-lg-8">
                 <h1 class="page-title" data-aos="fade-up">Explore clinical trials</h1>
-                <p class="lead-ou" data-aos="fade-up" data-aos-delay="100">Active cancer trials across India, added by doctors and refreshed every night from ClinicalTrials.gov. Search by cancer type, city or medicine.</p>
-                <div class="chip-row" data-aos="fade-up" data-aos-delay="200">
+                <p class="lead-ou" data-aos="fade-up" data-aos-delay="100">Active cancer trials across India. Data refreshed daily, with real-time updates directly from researchers and trial teams. Search by cancer type, state, city, medicine or recruitment month.</p>
+                <div class="chip-row chip-row--single" data-aos="fade-up" data-aos-delay="200">
                     <a class="chip<?= $filters['cancer'] === '' ? ' active' : '' ?>" href="<?= e($filterUrl(['cancer' => '', 'page' => null])) ?>">All cancers</a>
                     <?php foreach (content()->cancerTypes() as $c): if (!$c['featured']) continue; ?>
                         <a class="chip<?= $filters['cancer'] === $c['slug'] ? ' active' : '' ?>" href="<?= e($filterUrl(['cancer' => $c['slug']])) ?>"><?= e($c['chip']) ?></a>
@@ -46,10 +48,11 @@ require __DIR__ . '/includes/header.php';
                 <?php illustration('radar'); ?>
             </div>
         </div>
+        <?php partial('reviewed', ['key' => 'explore', 'delay' => 250]); ?>
     </div>
 </section>
 
-<section class="section section--explore">
+<section class="section section--explore" id="results">
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-3">
@@ -69,7 +72,7 @@ require __DIR__ . '/includes/header.php';
 
                             <div class="mb-3">
                                 <label class="form-label" for="fq">Medicine or keyword</label>
-                                <input class="form-control" type="search" id="fq" name="q" maxlength="80" value="<?= e($filters['q']) ?>" placeholder="e.g. a drug name">
+                                <input class="form-control" type="search" id="fq" name="q" maxlength="80" value="<?= e($filters['q']) ?>" placeholder="e.g. drug name">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="fcancer">Cancer type</label>
@@ -80,12 +83,13 @@ require __DIR__ . '/includes/header.php';
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <?php partial('state-city', ['mode' => 'filter', 'prefix' => 'f', 'wrap' => 'mb-3', 'state' => $filters['state'], 'city' => $filters['city']]); ?>
                             <div class="mb-3">
-                                <label class="form-label" for="fcity">City</label>
-                                <select class="form-select" id="fcity" name="city">
-                                    <option value="">All cities</option>
-                                    <?php foreach (content()->cities() as $c): ?>
-                                        <option value="<?= e($c['slug']) ?>"<?= $filters['city'] === $c['slug'] ? ' selected' : '' ?>><?= e($c['name']) ?></option>
+                                <label class="form-label" for="fmonth">Recruitment start month</label>
+                                <select class="form-select" id="fmonth" name="month">
+                                    <option value="">Any month</option>
+                                    <?php foreach (TrialService::monthOptions() as $val => $label): ?>
+                                        <option value="<?= e($val) ?>"<?= $filters['month'] === $val ? ' selected' : '' ?>><?= e($label) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -131,7 +135,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="results-bar" data-aos="fade-up">
                     <p class="mb-0" role="status"><strong><?= (int) $result['total'] ?></strong> active trial<?= $result['total'] === 1 ? '' : 's' ?></p>
                     <form class="d-flex align-items-center gap-2 js-sort-form" action="<?= e(url('explore-trials.php')) ?>" method="get">
-                        <?php foreach (['cancer' => $filters['cancer'], 'city' => $filters['city'], 'q' => $filters['q']] as $k => $v): if ($v === '') continue; ?>
+                        <?php foreach (['cancer' => $filters['cancer'], 'state' => $filters['state'], 'city' => $filters['city'], 'month' => $filters['month'], 'q' => $filters['q']] as $k => $v): if ($v === '') continue; ?>
                             <input type="hidden" name="<?= e($k) ?>" value="<?= e($v) ?>">
                         <?php endforeach; ?>
                         <input type="hidden" name="f" value="1">
@@ -176,6 +180,10 @@ require __DIR__ . '/includes/header.php';
                         </nav>
                     <?php endif; ?>
                 <?php endif; ?>
+
+                <p class="small-note mt-4 mb-0"><i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+                    OncoUday shares trial information only and does not give medical advice. Some listings come from ClinicalTrials.gov, a service of the U.S. National Library of Medicine, and are labelled with their source.
+                    <a href="<?= e(url('medical-disclaimer.php')) ?>">Medical disclaimer</a></p>
             </div>
         </div>
     </div>

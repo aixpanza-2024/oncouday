@@ -96,3 +96,29 @@ function format_date(?string $date): string
     $ts = strtotime($date);
     return $ts ? date('j M Y', $ts) : '';
 }
+
+function whatsapp_chat_url(string $text = 'Hi'): string
+{
+    $number = preg_replace('/\D/', '', (string) config('contact.whatsapp_chat', ''));
+    return 'https://wa.me/' . (strlen($number) >= 10 ? $number : '') . '?text=' . rawurlencode($text);
+}
+
+function legal_html(string $html): string
+{
+    $g = config('contact.grievance');
+    $tokens = [
+        '{entity}'          => e(config('legal.entity')),
+        '{address}'         => e(config('legal.address')),
+        '{jurisdiction}'    => e(config('legal.jurisdiction')),
+        '{hosting}'         => e(config('legal.hosting')),
+        '{effective}'       => e(format_date(config('legal.effective'))),
+        '{notice_version}'  => e(config('app.notice_version')),
+        '{contact_email}'   => e(config('contact.email')),
+        '{contact_whatsapp}' => e(config('contact.whatsapp')),
+        '{grievance_name}'  => e($g['name']),
+        '{grievance_email}' => e($g['email']),
+        '{grievance_phone}' => e($g['phone']),
+    ];
+    $html = strtr($html, $tokens);
+    return preg_replace_callback('/\{link:([a-z0-9\-]+\.php)(#[a-z0-9\-]+)?\}/', static fn ($m) => e(url($m[1])) . ($m[2] ?? ''), $html) ?? $html;
+}

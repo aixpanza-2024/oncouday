@@ -24,8 +24,38 @@ final class ContentService
         return array_column($this->cities(), 'name', 'slug');
     }
 
+    public function city(string $slug): ?array
+    {
+        foreach ($this->cities() as $c) {
+            if ($c['slug'] === $slug) {
+                return $c;
+            }
+        }
+        return null;
+    }
+
+    public function states(): array
+    {
+        $states = array_values(array_unique(array_column($this->cities(), 'state')));
+        sort($states);
+        return $states;
+    }
+
+    public function citiesInState(string $state): array
+    {
+        if ($state === '') {
+            return $this->cities();
+        }
+        return array_values(array_filter($this->cities(), static fn ($c) => $c['state'] === $state));
+    }
+
     public function specialtyMap(): array
     {
         return array_column($this->specialties(), 'name', 'slug');
+    }
+
+    public function reviewedOn(string $page): ?string
+    {
+        return $this->reviewed()[$page] ?? null;
     }
 }
