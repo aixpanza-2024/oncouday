@@ -264,11 +264,11 @@ main:focus { outline: none; }
 .wa-cta--compact .wa-cta__icon { font-size: 1.6rem; }
 .wa-float {
     position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 1041;
-    display: inline-flex; align-items: center; gap: .5rem; height: 50px; padding: 0 1.15rem 0 .95rem; border-radius: 999px;
+    display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%;
     background: #1fa855; color: #fff; font-weight: 700; text-decoration: none; box-shadow: 0 14px 30px -12px rgba(31, 168, 85, .7);
     transition: transform .3s var(--ou-ease), background .2s;
 }
-.wa-float i { font-size: 1.45rem; }
+.wa-float i { font-size: 1.6rem; line-height: 1; }
 .wa-float:hover { color: #fff; background: #178a45; transform: translateY(-3px); }
 
 .chip-row { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.5rem; }
@@ -338,7 +338,7 @@ main:focus { outline: none; }
 .ou-toast { background: var(--ou-navy); color: #fff; border: 0; border-radius: 12px; box-shadow: var(--ou-shadow); }
 
 .back-to-top {
-    position: fixed; right: 1.25rem; bottom: 5rem; z-index: 1040;
+    position: fixed; right: calc(1.25rem + 4px); bottom: 5.25rem; z-index: 1040;
     width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
     background: var(--ou-orange); color: var(--ou-navy); font-size: 1.2rem; text-decoration: none;
     box-shadow: var(--ou-shadow); opacity: 0; visibility: hidden; transform: translateY(16px);
@@ -441,10 +441,11 @@ main:focus { outline: none; }
 .pillar h3 { color: #fff; font-size: 1.08rem; }
 .pillar p { color: rgba(255, 255, 255, .78); font-size: .94rem; }
 
-.team-card { background: var(--ou-peach); padding: 1.5rem; height: 100%; transition: transform .35s var(--ou-ease), box-shadow .35s; }
+.team-card { background: var(--ou-peach); padding: .75rem .75rem 1.25rem; height: 100%; transition: transform .35s var(--ou-ease), box-shadow .35s; }
 .team-card:hover { transform: translateY(-5px); box-shadow: var(--ou-shadow); }
-.team-card__photo { width: 84px; height: 84px; border-radius: 50%; background: var(--ou-sand); color: var(--ou-navy); display: grid; place-items: center; font-family: var(--font-head); font-size: 1.6rem; font-weight: 800; margin-bottom: 1rem; }
-img.team-card__photo { display: block; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 14px rgba(20, 30, 90, .12); }
+.team-card__photo { width: 100%; aspect-ratio: 4 / 5; height: auto; border-radius: 14px; background: var(--ou-sand); color: var(--ou-navy); display: grid; place-items: center; font-family: var(--font-head); font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+img.team-card__photo { display: block; object-fit: cover; object-position: center top; }
+.team-card h3, .team-card h4, .team-card p { padding-inline: .5rem; }
 .team-card h3, .team-card h4 { font-size: 1.1rem; margin-bottom: .2rem; }
 .team-group { font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ou-magenta); margin: 0 0 1rem; }
 .team-card p { color: var(--ou-muted); font-size: .9rem; }
@@ -671,6 +672,8 @@ img.team-card__photo { display: block; object-fit: cover; border: 3px solid #fff
 .footer-tagline { max-width: 340px; }
 .social-list a { width: 40px; height: 40px; border-radius: 10px; background: var(--ou-navy-2); color: #fff; display: grid; place-items: center; transition: background .25s, transform .25s var(--ou-ease); }
 .social-list a:hover { background: var(--ou-orange); color: var(--ou-navy); transform: translateY(-3px); }
+.social-list a.social-wa { background: #1fa855; font-size: 1.15rem; }
+.social-list a.social-wa:hover { background: #178a45; color: #fff; }
 .footer-heading { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ou-orange); margin-bottom: 1rem; }
 .footer-links li { margin-bottom: .6rem; }
 .footer-links a { color: rgba(255, 255, 255, .85); text-decoration: none; position: relative; }
@@ -868,9 +871,8 @@ img.team-card__photo { display: block; object-fit: cover; border: 3px solid #fff
     .explore-banner small { display: none; }
     .contact-list div { grid-template-columns: 1fr; gap: .1rem; }
     .chip { font-size: .85rem; padding: .42rem .85rem; }
-    .back-to-top { right: .85rem; bottom: 4.4rem; }
-    .wa-float { right: .85rem; bottom: .85rem; height: 48px; width: 48px; padding: 0; justify-content: center; }
-    .wa-float span { display: none; }
+    .back-to-top { right: calc(.85rem + 1px); bottom: 4.4rem; }
+    .wa-float { right: .85rem; bottom: .85rem; height: 48px; width: 48px; }
     .dna-pair:nth-child(2n) { display: none; }
 }
 

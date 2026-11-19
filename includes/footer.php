@@ -23,8 +23,8 @@ $showDisclaimer ??= false;
                     <span class="brand-name">Onco<span>Uday</span></span>
                 </a>
                 <p class="footer-tagline">India's gateway to cancer clinical trials and patient support.</p>
-                <a class="btn btn-whatsapp btn-sm mb-3" href="<?= e(whatsapp_chat_url()) ?>" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i> WhatsApp us</a>
                 <ul class="social-list list-unstyled d-flex gap-2 mb-0">
+                    <li><a class="social-wa" href="<?= e(whatsapp_chat_url()) ?>" target="_blank" rel="noopener" aria-label="WhatsApp us"><i class="bi bi-whatsapp" aria-hidden="true"></i></a></li>
                     <?php foreach (config('social') as $s): ?>
                         <li><a href="<?= e($s['url']) ?>" aria-label="<?= e($s['label']) ?>"><i class="bi bi-<?= e($s['icon']) ?>" aria-hidden="true"></i></a></li>
                     <?php endforeach; ?>
@@ -56,7 +56,7 @@ $showDisclaimer ??= false;
 </footer>
 
 <a href="<?= e(whatsapp_chat_url()) ?>" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp us">
-    <i class="bi bi-whatsapp" aria-hidden="true"></i><span>WhatsApp us</span>
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
 </a>
 <a href="#main" class="back-to-top" aria-label="Back to top"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>
 

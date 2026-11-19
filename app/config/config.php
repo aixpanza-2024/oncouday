@@ -34,8 +34,7 @@ return [
         'email'     => 'info@oncouday.com',
         'whatsapp'  => '+91 80505 19549',
         'whatsapp_chat' => getenv('WHATSAPP_CHAT_NUMBER') ?: '918050519549',
-        'address'   => '[Office address]',
-        'hours'     => '[Working hours]',
+        'hours'     => 'Working hours: 9 am to 5 pm, Monday to Saturday',
         'grievance' => [
             'name'  => 'Dr Uddiptya Goswami',
             'email' => 'grievance@oncouday.com',

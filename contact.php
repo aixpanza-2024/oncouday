@@ -76,8 +76,6 @@ require __DIR__ . '/includes/header.php';
                     <h2>Reach us directly</h2>
                     <ul class="list-unstyled mb-0">
                         <li><i class="bi bi-envelope" aria-hidden="true"></i><?= e($contact['email']) ?></li>
-                        <li><i class="bi bi-whatsapp" aria-hidden="true"></i>WhatsApp: <?= e($contact['whatsapp']) ?></li>
-                        <li><i class="bi bi-geo-alt" aria-hidden="true"></i><?= e($contact['address']) ?></li>
                         <li><i class="bi bi-clock" aria-hidden="true"></i><?= e($contact['hours']) ?></li>
                     </ul>
                 </div>

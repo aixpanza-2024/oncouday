@@ -104,10 +104,10 @@ require __DIR__ . '/includes/header.php';
                 <?php foreach ($members as $i => $m):
                     $initials = implode('', array_map(static fn ($w) => mb_substr($w, 0, 1), array_slice(array_values(array_filter(explode(' ', $m['name']), static fn ($w) => $w !== 'Dr')), 0, 2)));
                 ?>
-                    <div class="<?= count($members) > 2 ? 'col-sm-6 col-lg-3' : 'col-md-6 col-lg-4' ?>">
+                    <div class="col-sm-6 col-lg-3">
                         <div class="team-card" data-aos="flip-left" data-aos-delay="<?= $i * 100 ?>">
                             <?php if (!empty($m['photo'])): ?>
-                                <img class="team-card__photo" src="<?= e(asset($m['photo'])) ?>" alt="<?= e($m['name']) ?>" width="84" height="84" loading="lazy">
+                                <img class="team-card__photo" src="<?= e(asset($m['photo'])) ?>" alt="<?= e($m['name']) ?>" width="480" height="600" loading="lazy">
                             <?php else: ?>
                                 <div class="team-card__photo" aria-hidden="true"><?= e($initials) ?></div>
                             <?php endif; ?>
