@@ -15,9 +15,6 @@ $current    ??= '';
                     <span><i class="bi bi-calendar-check" aria-hidden="true"></i> Effective from <?= e(format_date(config('legal.effective'))) ?></span>
                     <span><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Version <?= e($docVersion) ?></span>
                 </p>
-                <?php if (config('legal.review_pending')): ?>
-                    <div class="draft-note" data-aos="fade-up" data-aos-delay="160"><strong>Pending legal review.</strong> This document is awaiting final review by OncoUday's legal counsel before launch.</div>
-                <?php endif; ?>
             </div>
             <?php if (!empty($art)): ?>
                 <div class="col-lg-4 d-flex justify-content-center justify-content-lg-end">

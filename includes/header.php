@@ -43,7 +43,7 @@ $languages = config('app.languages');
 
 <div class="topbar">
     <div class="container-xxl d-flex align-items-center justify-content-between gap-3">
-        <p class="topbar-text mb-0"><span class="live-dot" aria-hidden="true"></span><span class="d-none d-md-inline">Data refreshed daily · real-time updates directly from researchers and trial teams</span><span class="d-md-none">Data refreshed daily · real-time trial updates</span></p>
+        <p class="topbar-text mb-0"><span class="live-dot" aria-hidden="true"></span><span class="d-none d-md-inline">Data refreshed daily. Real-time updates directly from researchers and trial teams.</span><span class="d-md-none">Data refreshed daily. Real-time trial updates.</span></p>
         <?php partial('language-switcher', ['languages' => $languages, 'class' => 'd-none d-sm-flex']); ?>
     </div>
 </div>

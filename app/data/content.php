@@ -111,7 +111,7 @@ return [
             ['q' => 'How do you decide which trials match me?', 'a' => 'Every new or updated trial is checked against the city and cancer type you registered with. When both match, we send you a short WhatsApp alert with a link to the trial details.'],
             ['q' => 'Can I register on behalf of a family member?', 'a' => 'Yes. Caregivers can register on behalf of a patient. For patients under 18, a parent or legal guardian must register and give consent on their behalf.'],
             ['q' => 'Do I need to download an app or create a password?', 'a' => 'No. You register once on this website and everything after that happens on WhatsApp, the app you already use. There is no password to remember.'],
-            ['q' => 'The trial I like is not yet recruiting. What should I do next?', 'a' => 'Register your name with OncoUday for that city and cancer type. We will notify you on WhatsApp as soon as the trial starts recruiting, so you can talk to your doctor and the trial team about joining.'],
+            ['q' => 'The trial I like is not yet recruiting. What should I do next?', 'a' => 'Register your name with OncoUday for that city and cancer type. We will notify you on WhatsApp as soon as the trial reaches its start date and begins recruiting, so you can talk to your doctor and the trial team about joining.'],
             ['q' => 'I find the form difficult. Can I register on WhatsApp instead?', 'a' => 'Yes. Tap “WhatsApp us” on any page and send “Hi”. Our WhatsApp assistant will ask a few simple questions and register you in the chat.'],
             ['q' => 'How do I stop the alerts?', 'a' => 'Reply STOP to any OncoUday WhatsApp message and the alerts stop straight away. You can also ask us to delete your data at any time.'],
         ],
@@ -120,7 +120,6 @@ return [
             ['q' => 'How long does it take to add a trial?', 'a' => 'About three minutes. With an NCT number it takes under a minute, because the details are filled in automatically from ClinicalTrials.gov and you only confirm them.'],
             ['q' => 'What is the weekly check?', 'a' => 'Once a week we send a one-tap WhatsApp message asking whether your trial is still active, closed or needs an update. The website changes instantly, so your listing stays accurate.'],
             ['q' => 'I don’t run trials. Can I still use OncoUday?', 'a' => 'Yes. Choose “I don’t run trials — I want to follow them” when you register. You will receive a short WhatsApp summary when a trial opens in your city or specialty.'],
-            ['q' => 'Is there a fee for doctors?', 'a' => '[To be confirmed by OncoUday.]'],
         ],
         'privacy' => [
             ['q' => 'Who can see my details?', 'a' => 'Your details are never shown on the website. They are stored securely and used only to send you matching alerts.'],
@@ -146,17 +145,17 @@ return [
 
     'team' => [
         'Founders' => [
-            ['name' => 'Dr Uddiptya Goswami',       'role' => 'Founder'],
+            ['name' => 'Dr Uddiptya Goswami',       'role' => 'Founder', 'photo' => 'img/team/uddiptya.jpg'],
             ['name' => 'Dr Subhadarsini Mohapatra', 'role' => 'Co-Founder', 'photo' => 'img/team/subhadarsini.jpg'],
         ],
         'Medical advisor' => [
             ['name' => 'Dr Boben Thomas', 'role' => 'Medical Advisor', 'photo' => 'img/team/drboban.jpg'],
         ],
         'Contributors' => [
-            ['name' => 'Uddipan Goswami',            'role' => 'Contributor', 'photo' => 'img/team/uddipan.jpg'],
-            ['name' => 'Dipanjan Narayan Chaudhary', 'role' => 'Contributor', 'photo' => 'img/team/dipanjan.jpg'],
-            ['name' => 'Sayantika Sengupta',         'role' => 'Contributor', 'photo' => 'img/team/sayantika.jpg'],
-            ['name' => 'Mohammed Hashim',            'role' => 'Contributor', 'photo' => 'img/team/hashim.jpg'],
+            ['name' => 'Dipanjan Narayan Chaudhary', 'role' => 'Senior Data & AI Engineer', 'photo' => 'img/team/dipanjan.jpg'],
+            ['name' => 'Uddipan Goswami',            'role' => 'Data Engineer', 'photo' => 'img/team/uddipan.jpg'],
+            ['name' => 'Sayantika Sengupta',         'role' => 'Data & AI Engineer', 'photo' => 'img/team/sayantika.jpg'],
+            ['name' => 'Mohammed Hashim',            'role' => 'Freelancer', 'photo' => 'img/team/hashim.jpg'],
         ],
     ],
 

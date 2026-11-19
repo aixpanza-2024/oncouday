@@ -330,6 +330,18 @@
             }
         }
 
+        var month = $('.explore-search select[name=month]');
+        // Picking a start month asks the server for the trials that start in that month.
+        if (month) { month.addEventListener('change', function () { send(month.form); }); }
+
+        var search = $('.explore-search input[name=q]');
+        if (search) {
+            // Clearing the search box with its × asks the server for the results without the keyword.
+            search.addEventListener('search', function () {
+                if (search.value === '') { send(search.form); }
+            });
+        }
+
         var sort = $('.js-sort-form select');
         // Changing the sort order asks the server for the same results in the new order.
         if (sort) { sort.addEventListener('change', function () { send(sort.form); }); }

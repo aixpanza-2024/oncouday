@@ -13,12 +13,7 @@ return [
     ],
 
     'legal' => [
-        'entity'         => '[OncoUday legal entity name]',
-        'address'        => '[Registered office address]',
-        'jurisdiction'   => '[City, State]',
-        'hosting'        => '[Hosting provider, India]',
         'effective'      => '2026-11-18',
-        'review_pending' => false,
     ],
 
     'db' => [

@@ -58,7 +58,7 @@ require __DIR__ . '/includes/header.php';
             <div class="col-lg-6">
                 <form class="form-card needs-validation js-demo-form" action="<?= e(url('doctor-registration.php')) ?>" method="post" novalidate
                       data-success-title="Check your WhatsApp"
-                      data-success-text="We'll send a verification and welcome message to your WhatsApp number. (Design preview: WhatsApp verification is connected in the next stage.)"
+                      data-success-text="We'll send a verification and welcome message to your WhatsApp number."
                       data-aos="fade-left" data-aos-delay="100">
                     <?= csrf_field() ?>
                     <h2 class="form-card__title">Doctor registration</h2>

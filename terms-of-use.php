@@ -10,7 +10,7 @@ $page = [
 
 $sections = [
     ['id' => 'agreement', 'title' => 'About these terms', 'html' => '
-        <p>These Terms of Use (“Terms”) are an agreement between you and {entity}, {address} (“OncoUday”, “we”, “us”). They apply to the OncoUday website and our WhatsApp service (together, the “Platform”).</p>
+        <p>These Terms of Use (“Terms”) are an agreement between you and OncoUday (“we”, “us”). They apply to the OncoUday website and our WhatsApp service (together, the “Platform”).</p>
         <p>By using the Platform or registering, you agree to these Terms, our <a href="{link:privacy-policy.php}">Privacy Policy</a> and our <a href="{link:medical-disclaimer.php}">Medical Disclaimer</a>. Doctors also agree to the <a href="{link:doctor-terms.php}">Terms for Doctors</a>. If you do not agree, please do not use the Platform.</p>
         <p>These Terms are an electronic record under the Information Technology Act, 2000 and the rules made under it, and are published as required by the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021. They do not need a physical or digital signature.</p>'],
 
@@ -101,7 +101,7 @@ $sections = [
         <p>We may update these Terms. We will change the version and date at the top of this page and, for important changes, tell registered users on WhatsApp or by email before the changes take effect. If you continue to use the Platform after that, you accept the updated Terms.</p>'],
 
     ['id' => 'law', 'title' => 'Governing law and courts', 'html' => '
-        <p>These Terms are governed by the laws of India. Subject to any right you have to go to a consumer forum, the courts at {jurisdiction} have exclusive jurisdiction over any dispute about these Terms or the Platform.</p>'],
+        <p>These Terms are governed by the laws of India. Subject to any right you have to go to a consumer forum, the courts in India have jurisdiction over any dispute about these Terms or the Platform.</p>'],
 
     ['id' => 'general', 'title' => 'General', 'html' => '
         <ul>

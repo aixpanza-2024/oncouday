@@ -23,10 +23,67 @@ $filterUrl = static function (array $changes) use ($filters): string {
         'status' => $filters['status'],
         'source' => $filters['source'],
         'sort'   => $filters['sort'],
+        'per'    => $filters['per'] === TrialService::PER_PAGE ? null : $filters['per'],
     ];
     $query = array_filter(array_merge($query, $changes), static fn ($v) => $v !== '' && $v !== [] && $v !== null);
     return url('explore-trials.php', $query);
 };
+
+$without = static function (string $key, ?string $value = null) use ($filters, $filterUrl): string {
+    $list = ['phase' => 'phases', 'status' => 'status', 'source' => 'source'];
+    if (isset($list[$key])) {
+        return $filterUrl([$key => array_values(array_diff($filters[$list[$key]], [$value])), 'page' => null]);
+    }
+    $changes = [$key => '', 'page' => null];
+    if ($key === 'state') {
+        $changes['city'] = '';
+    }
+    return $filterUrl($changes);
+};
+
+$hiddenFilters = static function (array $skip) use ($filters): string {
+    $html = '<input type="hidden" name="f" value="1">';
+    $single = ['cancer' => $filters['cancer'], 'state' => $filters['state'], 'city' => $filters['city'], 'month' => $filters['month'], 'q' => $filters['q'], 'sort' => $filters['sort'], 'per' => $filters['per'] === TrialService::PER_PAGE ? '' : (string) $filters['per']];
+    foreach ($single as $k => $v) {
+        if ($v !== '' && !in_array($k, $skip, true)) {
+            $html .= '<input type="hidden" name="' . e($k) . '" value="' . e($v) . '">';
+        }
+    }
+    foreach (['phase' => $filters['phases'], 'status' => $filters['status'], 'source' => $filters['source']] as $k => $list) {
+        foreach ($list as $v) {
+            $html .= '<input type="hidden" name="' . e($k) . '[]" value="' . e($v) . '">';
+        }
+    }
+    return $html;
+};
+
+$cityNames  = content()->cityMap();
+$monthNames = TrialService::monthOptions();
+$active = [];
+if ($filters['q'] !== '') {
+    $active[] = ['“' . $filters['q'] . '”', $without('q')];
+}
+if ($filters['cancer'] !== '') {
+    $active[] = [content()->cancerTypeMap()[$filters['cancer']] ?? $filters['cancer'], $without('cancer')];
+}
+if ($filters['state'] !== '') {
+    $active[] = [$filters['state'], $without('state')];
+}
+if ($filters['city'] !== '') {
+    $active[] = [$cityNames[$filters['city']] ?? $filters['city'], $without('city')];
+}
+if ($filters['month'] !== '') {
+    $active[] = ['Starts ' . ($monthNames[$filters['month']] ?? $filters['month']), $without('month')];
+}
+foreach ($filters['phases'] as $p) {
+    $active[] = ['Phase ' . $p, $without('phase', $p)];
+}
+foreach ($filters['status'] as $s) {
+    $active[] = [TrialService::statusLabel($s), $without('status', $s)];
+}
+foreach ($filters['source'] as $s) {
+    $active[] = [$s === 'doctor' ? 'Verified by doctors' : 'ClinicalTrials.gov', $without('source', $s)];
+}
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -69,11 +126,10 @@ require __DIR__ . '/includes/header.php';
                             <h2 class="filter-title d-none d-lg-block">Filter trials</h2>
                             <input type="hidden" name="f" value="1">
                             <input type="hidden" name="sort" value="<?= e($filters['sort']) ?>">
+                            <?php if ($filters['q'] !== ''): ?><input type="hidden" name="q" value="<?= e($filters['q']) ?>"><?php endif; ?>
+                            <?php if ($filters['month'] !== ''): ?><input type="hidden" name="month" value="<?= e($filters['month']) ?>"><?php endif; ?>
+                            <?php if ($filters['per'] !== TrialService::PER_PAGE): ?><input type="hidden" name="per" value="<?= (int) $filters['per'] ?>"><?php endif; ?>
 
-                            <div class="mb-3">
-                                <label class="form-label" for="fq">Medicine or keyword</label>
-                                <input class="form-control" type="search" id="fq" name="q" maxlength="80" value="<?= e($filters['q']) ?>" placeholder="e.g. drug name">
-                            </div>
                             <div class="mb-3">
                                 <label class="form-label" for="fcancer">Cancer type</label>
                                 <select class="form-select" id="fcancer" name="cancer">
@@ -84,15 +140,6 @@ require __DIR__ . '/includes/header.php';
                                 </select>
                             </div>
                             <?php partial('state-city', ['mode' => 'filter', 'prefix' => 'f', 'wrap' => 'mb-3', 'state' => $filters['state'], 'city' => $filters['city']]); ?>
-                            <div class="mb-3">
-                                <label class="form-label" for="fmonth">Recruitment start month</label>
-                                <select class="form-select" id="fmonth" name="month">
-                                    <option value="">Any month</option>
-                                    <?php foreach (TrialService::monthOptions() as $val => $label): ?>
-                                        <option value="<?= e($val) ?>"<?= $filters['month'] === $val ? ' selected' : '' ?>><?= e($label) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
 
                             <fieldset class="mb-3">
                                 <legend>Phase</legend>
@@ -126,22 +173,58 @@ require __DIR__ . '/includes/header.php';
 
                             <noscript><button class="btn btn-navy w-100 mb-2" type="submit">Apply filters</button></noscript>
                             <a class="btn btn-outline-navy w-100" href="<?= e(url('explore-trials.php')) ?>">Clear filters</a>
+
+                            <div class="alert-box mt-4">
+                                <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                                <p class="mb-2"><strong>Get WhatsApp alerts for new trials</strong><br>Register your city and cancer type, and we'll tell you when a matching trial opens.</p>
+                                <a class="btn btn-magenta btn-sm w-100" href="<?= e(url('patient-registration.php')) ?>">Get trial alerts</a>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-9">
-                <div class="results-bar" data-aos="fade-up">
-                    <p class="mb-0" role="status"><strong><?= (int) $result['total'] ?></strong> active trial<?= $result['total'] === 1 ? '' : 's' ?></p>
-                    <form class="d-flex align-items-center gap-2 js-sort-form" action="<?= e(url('explore-trials.php')) ?>" method="get">
-                        <?php foreach (['cancer' => $filters['cancer'], 'state' => $filters['state'], 'city' => $filters['city'], 'month' => $filters['month'], 'q' => $filters['q']] as $k => $v): if ($v === '') continue; ?>
-                            <input type="hidden" name="<?= e($k) ?>" value="<?= e($v) ?>">
+                <form class="explore-search" action="<?= e(url('explore-trials.php')) ?>#results" method="get" role="search" data-aos="fade-up">
+                    <?= $hiddenFilters(['q', 'month']) ?>
+                    <div class="explore-search__field">
+                        <label class="visually-hidden" for="fq">Search trials</label>
+                        <i class="bi bi-search explore-search__icon" aria-hidden="true"></i>
+                        <input class="form-control" type="search" id="fq" name="q" maxlength="80" value="<?= e($filters['q']) ?>" placeholder="Search by medicine, keyword, hospital or trial ID…" autocomplete="off">
+                    </div>
+                    <label class="visually-hidden" for="fmonth">Recruitment start month</label>
+                    <select class="form-select explore-search__month" id="fmonth" name="month">
+                        <option value="">Any start month</option>
+                        <?php foreach (TrialService::monthOptions() as $val => $label): ?>
+                            <option value="<?= e($val) ?>"<?= $filters['month'] === $val ? ' selected' : '' ?>><?= e($label) ?></option>
                         <?php endforeach; ?>
-                        <input type="hidden" name="f" value="1">
-                        <?php foreach (['phase' => $filters['phases'], 'status' => $filters['status'], 'source' => $filters['source']] as $k => $list): foreach ($list as $v): ?>
-                            <input type="hidden" name="<?= e($k) ?>[]" value="<?= e($v) ?>">
-                        <?php endforeach; endforeach; ?>
+                    </select>
+                    <button class="btn btn-navy" type="submit" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i><span class="d-none d-sm-inline ms-2">Search</span></button>
+                </form>
+
+                <?php if ($active): ?>
+                    <div class="active-filters" aria-label="Active filters">
+                        <?php foreach ($active as [$label, $href]): ?>
+                            <a class="filter-pill" href="<?= e($href) ?>#results" aria-label="Remove filter: <?= e($label) ?>"><?= e($label) ?> <i class="bi bi-x-circle-fill" aria-hidden="true"></i></a>
+                        <?php endforeach; ?>
+                        <a class="filter-pill-clear" href="<?= e(url('explore-trials.php')) ?>#results">Clear all</a>
+                    </div>
+                <?php endif; ?>
+
+                <div class="results-bar" data-aos="fade-up">
+                    <p class="mb-0" role="status">
+                        <strong><?= (int) $result['total'] ?></strong> trial<?= $result['total'] === 1 ? '' : 's' ?> found<?php if ($result['total'] > 0): ?><span class="text-muted-ou"> · showing <?= (int) $result['from'] ?> to <?= (int) $result['to'] ?></span><?php endif; ?>
+                    </p>
+                    <div class="results-tools">
+                        <nav class="per-page" aria-label="Trials per page">
+                            <span class="small text-muted-ou">Show</span>
+                            <?php foreach (TrialService::PER_PAGE_OPTIONS as $n): ?>
+                                <a href="<?= e($filterUrl(['per' => $n === TrialService::PER_PAGE ? null : $n, 'page' => null])) ?>#results"<?= $result['per'] === $n ? ' class="active" aria-current="true"' : '' ?>><?= $n ?></a>
+                            <?php endforeach; ?>
+                            <span class="small text-muted-ou">per page</span>
+                        </nav>
+                    <form class="d-flex align-items-center gap-2 js-sort-form" action="<?= e(url('explore-trials.php')) ?>" method="get">
+                        <?= $hiddenFilters(['sort']) ?>
                         <label class="small text-muted-ou text-nowrap" for="sort">Sort by</label>
                         <select class="form-select form-select-sm" id="sort" name="sort">
                             <?php foreach (TrialService::SORTS as $key => $label): ?>
@@ -149,6 +232,7 @@ require __DIR__ . '/includes/header.php';
                             <?php endforeach; ?>
                         </select>
                     </form>
+                    </div>
                 </div>
 
                 <?php if (!$result['items']): ?>
@@ -164,7 +248,7 @@ require __DIR__ . '/includes/header.php';
                 <?php else: ?>
                     <div class="d-grid gap-3">
                         <?php foreach ($result['items'] as $i => $trial): ?>
-                            <?php partial('trial-card', ['trial' => $trial, 'variant' => 'full', 'delay' => min($i, 4) * 60]); ?>
+                            <?php partial('trial-card', ['trial' => $trial, 'variant' => 'full', 'delay' => min($i, 4) * 60, 'number' => $result['from'] + $i]); ?>
                         <?php endforeach; ?>
                     </div>
 

@@ -26,7 +26,7 @@ require __DIR__ . '/includes/header.php';
             <div class="col-lg-7">
                 <form class="form-card needs-validation js-demo-form" action="<?= e(url('contact.php')) ?>" method="post" novalidate
                       data-success-title="Message sent"
-                      data-success-text="Thank you for writing to us. Our team will get back to you soon. (Design preview: messages are connected in the next stage.)"
+                      data-success-text="Thank you for writing to us. Our team will get back to you soon."
                       data-aos="fade-up">
                     <?= csrf_field() ?>
                     <div class="hp-field" aria-hidden="true"><label for="website">Website</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></div>

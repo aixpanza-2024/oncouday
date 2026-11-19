@@ -51,7 +51,7 @@ require __DIR__ . '/includes/header.php';
             <div class="col-lg-7">
                 <form class="form-card needs-validation js-demo-form" action="<?= e(url('patient-registration.php')) ?>" method="post" novalidate
                       data-success-title="You're registered"
-                      data-success-text="We'll send a welcome message to your WhatsApp number and alert you when a matching trial opens. (Design preview: alerts are connected in the next stage.)"
+                      data-success-text="We'll send a welcome message to your WhatsApp number and alert you when a matching trial opens."
                       data-aos="fade-left" data-aos-delay="100">
                     <?= csrf_field() ?>
                     <input type="hidden" name="notice_version" value="<?= e($noticeVersion) ?>">
@@ -126,7 +126,6 @@ require __DIR__ . '/includes/header.php';
                                 <p>Your details are stored securely and are never shown on the website or sold.</p>
                                 <p>You can withdraw consent, stop alerts (reply STOP) or ask us to delete your data at any time.</p>
                                 <p>Grievance Officer: <?= e($grievance['name']) ?> · <?= e($grievance['email']) ?> · <?= e($grievance['phone']) ?></p>
-                                <p class="text-muted-ou">[Final wording to be provided by OncoUday's legal advisor]</p>
                             </div>
                             <div class="tab-pane fade" id="notice-hi" role="tabpanel" lang="hi">
                                 <p>OncoUday (डेटा फ़िड्यूशियरी) आपका नाम, आयु, ईमेल, व्हाट्सऐप नंबर, शहर और कैंसर का प्रकार एकत्र करता है।</p>
@@ -134,7 +133,6 @@ require __DIR__ . '/includes/header.php';
                                 <p>आपकी जानकारी सुरक्षित रूप से रखी जाती है और कभी भी वेबसाइट पर नहीं दिखाई जाती या बेची नहीं जाती।</p>
                                 <p>आप किसी भी समय सहमति वापस ले सकते हैं, अलर्ट बंद कर सकते हैं (STOP लिखकर भेजें) या अपना डेटा हटाने का अनुरोध कर सकते हैं।</p>
                                 <p>शिकायत अधिकारी: <?= e($grievance['name']) ?> · <?= e($grievance['email']) ?> · <?= e($grievance['phone']) ?></p>
-                                <p class="text-muted-ou">[अंतिम शब्दावली OncoUday के कानूनी सलाहकार द्वारा दी जाएगी]</p>
                             </div>
                             <div class="tab-pane fade" id="notice-ml" role="tabpanel" lang="ml">
                                 <p>OncoUday (ഡാറ്റ ഫിഡ്യൂഷ്യറി) നിങ്ങളുടെ പേര്, പ്രായം, ഇമെയിൽ, വാട്ട്സ്ആപ്പ് നമ്പർ, നഗരം, കാൻസർ തരം എന്നിവ ശേഖരിക്കുന്നു.</p>
@@ -142,7 +140,6 @@ require __DIR__ . '/includes/header.php';
                                 <p>നിങ്ങളുടെ വിവരങ്ങൾ സുരക്ഷിതമായി സൂക്ഷിക്കുന്നു; അവ ഒരിക്കലും വെബ്സൈറ്റിൽ കാണിക്കുകയോ വിൽക്കുകയോ ചെയ്യില്ല.</p>
                                 <p>എപ്പോൾ വേണമെങ്കിലും സമ്മതം പിൻവലിക്കാനും അലേർട്ടുകൾ നിർത്താനും (STOP എന്ന് മറുപടി നൽകുക) ഡാറ്റ നീക്കം ചെയ്യാൻ ആവശ്യപ്പെടാനും നിങ്ങൾക്ക് കഴിയും.</p>
                                 <p>പരാതി പരിഹാര ഓഫീസർ: <?= e($grievance['name']) ?> · <?= e($grievance['email']) ?> · <?= e($grievance['phone']) ?></p>
-                                <p class="text-muted-ou">[അന്തിമ വാചകം OncoUday-യുടെ നിയമ ഉപദേഷ്ടാവ് നൽകും]</p>
                             </div>
                         </div>
                     </div>

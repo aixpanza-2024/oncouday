@@ -14,7 +14,6 @@ $sections = [
             <li>Name: {grievance_name}</li>
             <li>Email: {grievance_email}</li>
             <li>Phone: {grievance_phone}</li>
-            <li>Post: Grievance Officer, {entity}, {address}</li>
         </ul>
         <p>The Grievance Officer handles questions and complaints under the Digital Personal Data Protection Act, 2023 and the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021.</p>'],
 

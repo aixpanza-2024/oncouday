@@ -10,7 +10,7 @@ $page = [
 
 $sections = [
     ['id' => 'who-we-are', 'title' => 'Who we are', 'html' => '
-        <p>OncoUday is operated by {entity}, {address} (“OncoUday”, “we”, “us”). This policy explains how we handle personal data on the OncoUday website and our WhatsApp service (together, the “Platform”).</p>
+        <p>This policy explains how OncoUday (“we”, “us”) handles personal data on the OncoUday website and our WhatsApp service (together, the “Platform”).</p>
         <p>Under the Digital Personal Data Protection Act, 2023 (the “DPDP Act”) and the Digital Personal Data Protection Rules, 2025 (the “DPDP Rules”), OncoUday is the <strong>Data Fiduciary</strong> for the personal data you share with us. Companies that run parts of the Platform for us act as our <strong>Data Processors</strong>.</p>
         <p>Please read this policy together with our <a href="{link:consent-notice.php}">Consent Notice</a>, <a href="{link:terms-of-use.php}">Terms of Use</a> and <a href="{link:cookie-policy.php}">Cookie Policy</a>.</p>'],
 
@@ -82,7 +82,7 @@ $sections = [
     ['id' => 'sharing', 'title' => 'Who we share data with', 'html' => '
         <p>Your personal details are never published on the website. We share personal data only with:</p>
         <ul>
-            <li><strong>Our Data Processors</strong>, under written contracts that let them use the data only on our instructions: our hosting provider ({hosting}), the WhatsApp Business Platform (Meta) and our email service.</li>
+            <li><strong>Our Data Processors</strong>, under written contracts that let them use the data only on our instructions: our hosting provider, the WhatsApp Business Platform (Meta) and our email service.</li>
             <li><strong>A trial team</strong>, only when you ask us to connect you with a specific trial, and only the details you agree to share at that time.</li>
             <li><strong>Government and law-enforcement authorities</strong>, when the law requires it, for example under a court order or a lawful request.</li>
             <li><strong>A successor organisation</strong>, if OncoUday is merged or transferred, which will remain bound by this policy. We will tell you before that happens.</li>
@@ -145,7 +145,6 @@ $sections = [
             <li>Name: {grievance_name}</li>
             <li>Email: {grievance_email}</li>
             <li>Phone: {grievance_phone}</li>
-            <li>Post: {entity}, {address}</li>
         </ul>
         <p>We resolve every grievance as soon as we can, and in any case within 90 days, as the DPDP Rules require. See <a href="{link:grievance-redressal.php}">Grievance Redressal</a> for details.</p>'],
 

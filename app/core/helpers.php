@@ -97,6 +97,18 @@ function format_date(?string $date): string
     return $ts ? date('j M Y', $ts) : '';
 }
 
+function registry_url(string $id): ?string
+{
+    $id = trim($id);
+    if (preg_match('/^NCT\d{8}$/', $id)) {
+        return 'https://clinicaltrials.gov/study/' . $id;
+    }
+    if (preg_match('#^CTRI/\d{4}/\d{2,3}/\d{6}$#', $id)) {
+        return 'https://ctri.nic.in/Clinicaltrials/advsearch.php';
+    }
+    return null;
+}
+
 function whatsapp_chat_url(string $text = 'Hi'): string
 {
     $number = preg_replace('/\D/', '', (string) config('contact.whatsapp_chat', ''));
@@ -107,10 +119,6 @@ function legal_html(string $html): string
 {
     $g = config('contact.grievance');
     $tokens = [
-        '{entity}'          => e(config('legal.entity')),
-        '{address}'         => e(config('legal.address')),
-        '{jurisdiction}'    => e(config('legal.jurisdiction')),
-        '{hosting}'         => e(config('legal.hosting')),
         '{effective}'       => e(format_date(config('legal.effective'))),
         '{notice_version}'  => e(config('app.notice_version')),
         '{contact_email}'   => e(config('contact.email')),

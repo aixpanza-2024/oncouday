@@ -10,7 +10,7 @@ $page = [
 
 $sections = [
     ['id' => 'about', 'title' => 'About this notice', 'html' => '
-        <p>This is the notice that {entity} (“OncoUday”), the Data Fiduciary, gives you before asking for your consent, as section 5 of the Digital Personal Data Protection Act, 2023 and the DPDP Rules, 2025 require. A short version appears on each registration form. This page is the full version. The current version is <strong>{notice_version}</strong>, and we record the version you saw when you gave consent.</p>'],
+        <p>This is the notice that OncoUday, the Data Fiduciary, gives you before asking for your consent, as section 5 of the Digital Personal Data Protection Act, 2023 and the DPDP Rules, 2025 require. A short version appears on each registration form. This page is the full version. The current version is <strong>{notice_version}</strong>, and we record the version you saw when you gave consent.</p>'],
 
     ['id' => 'patients', 'title' => 'For patients and caregivers', 'html' => '
         <h3>Personal data we will collect</h3>

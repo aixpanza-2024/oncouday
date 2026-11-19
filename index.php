@@ -23,7 +23,6 @@ require __DIR__ . '/includes/header.php';
                     <a class="btn btn-magenta btn-lg-ou" href="<?= e(url('patient-registration.php')) ?>">Register as a patient</a>
                     <a class="btn btn-navy btn-lg-ou" href="<?= e(url('doctor-registration.php')) ?>">Register as a doctor</a>
                 </div>
-                <p class="live-note mt-4" data-aos="fade-up" data-aos-delay="250"><span class="live-dot" aria-hidden="true"></span>Data refreshed daily · real-time updates directly from researchers and trial teams</p>
             </div>
         </div>
 
@@ -151,8 +150,8 @@ require __DIR__ . '/includes/header.php';
                         <i class="bi bi-patch-check-fill ms-auto" aria-hidden="true"></i>
                     </div>
                     <div class="phone-chat__body js-chat">
-                        <div class="chat-msg in">Hello [Name], thank you for registering with OncoUday. We'll message you when a trial matches your registered preferences.</div>
-                        <div class="chat-msg in"><strong>Update on your preferences</strong><br>A new trial is now open in Thiruvananthapuram.<br><span class="chat-link">oncouday.in/t/[id]</span></div>
+                        <div class="chat-msg in">Hello Anita, thank you for registering with OncoUday. We'll message you when a trial matches your registered preferences.</div>
+                        <div class="chat-msg in"><strong>Update on your preferences</strong><br>A new trial is now open in Thiruvananthapuram.<br><span class="chat-link">oncouday.com/t/1042</span></div>
                         <div class="chat-msg out">Thank you! <i class="bi bi-check2-all" aria-hidden="true"></i></div>
                         <div class="chat-typing" aria-hidden="true"><span></span><span></span><span></span></div>
                         <p class="chat-note">Reply STOP any time to stop alerts.</p>
@@ -174,7 +173,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="col-lg-5 offset-lg-1">
                 <div class="weekly-chat js-chat" data-aos="fade-left">
-                    <div class="chat-msg in">Weekly check, Dr. [Name]: is <strong>NCT0[XXXXXXX]</strong> still recruiting?</div>
+                    <div class="chat-msg in">Weekly check, Dr. Rao: is your <strong>lung cancer trial</strong> still recruiting?</div>
                     <div class="chat-options">
                         <span class="chat-option is-picked">Yes, no change</span>
                         <span class="chat-option">Update details</span>

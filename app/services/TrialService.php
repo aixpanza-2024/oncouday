@@ -8,6 +8,7 @@ final class TrialService
     public const SOURCES  = ['doctor' => 'Doctors on OncoUday (verified)', 'ctgov' => 'ClinicalTrials.gov'];
     public const SORTS    = ['recent' => 'Recently updated', 'title' => 'Title (A–Z)', 'city' => 'City (A–Z)'];
     public const PER_PAGE = 10;
+    public const PER_PAGE_OPTIONS = [10, 20, 50];
 
     public function __construct(
         private TrialRepositoryInterface $repo,
@@ -38,6 +39,7 @@ final class TrialService
             'source' => Request::queryList('source', array_keys(self::SOURCES)),
             'sort'   => Request::queryEnum('sort', array_keys(self::SORTS), 'recent'),
             'page'   => max(1, (int) Request::query('page', '1', 4)),
+            'per'    => (int) Request::queryEnum('per', array_map('strval', self::PER_PAGE_OPTIONS), (string) self::PER_PAGE),
         ];
 
         return $filters;
@@ -46,12 +48,14 @@ final class TrialService
     public function search(array $filters): array
     {
         $page   = $filters['page'] ?? 1;
+        $per    = in_array($filters['per'] ?? 0, self::PER_PAGE_OPTIONS, true) ? $filters['per'] : self::PER_PAGE;
         $total  = $this->repo->count($filters);
-        $pages  = max(1, (int) ceil($total / self::PER_PAGE));
+        $pages  = max(1, (int) ceil($total / $per));
         $page   = min($page, $pages);
-        $items  = $this->repo->search($filters, self::PER_PAGE, ($page - 1) * self::PER_PAGE);
+        $offset = ($page - 1) * $per;
+        $items  = $this->repo->search($filters, $per, $offset);
 
-        return ['items' => $items, 'total' => $total, 'page' => $page, 'pages' => $pages];
+        return ['items' => $items, 'total' => $total, 'page' => $page, 'pages' => $pages, 'per' => $per, 'from' => $total ? $offset + 1 : 0, 'to' => min($offset + $per, $total)];
     }
 
     public static function monthOptions(): array
