@@ -127,7 +127,6 @@ require __DIR__ . '/includes/header.php';
                             <input type="hidden" name="f" value="1">
                             <input type="hidden" name="sort" value="<?= e($filters['sort']) ?>">
                             <?php if ($filters['q'] !== ''): ?><input type="hidden" name="q" value="<?= e($filters['q']) ?>"><?php endif; ?>
-                            <?php if ($filters['month'] !== ''): ?><input type="hidden" name="month" value="<?= e($filters['month']) ?>"><?php endif; ?>
                             <?php if ($filters['per'] !== TrialService::PER_PAGE): ?><input type="hidden" name="per" value="<?= (int) $filters['per'] ?>"><?php endif; ?>
 
                             <div class="mb-3">
@@ -140,6 +139,15 @@ require __DIR__ . '/includes/header.php';
                                 </select>
                             </div>
                             <?php partial('state-city', ['mode' => 'filter', 'prefix' => 'f', 'wrap' => 'mb-3', 'state' => $filters['state'], 'city' => $filters['city']]); ?>
+                            <div class="mb-3">
+                                <label class="form-label" for="fmonth">Recruitment start month</label>
+                                <select class="form-select" id="fmonth" name="month">
+                                    <option value="">Any month</option>
+                                    <?php foreach (TrialService::monthOptions() as $val => $label): ?>
+                                        <option value="<?= e($val) ?>"<?= $filters['month'] === $val ? ' selected' : '' ?>><?= e($label) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
 
                             <fieldset class="mb-3">
                                 <legend>Phase</legend>
@@ -186,19 +194,12 @@ require __DIR__ . '/includes/header.php';
 
             <div class="col-lg-9">
                 <form class="explore-search" action="<?= e(url('explore-trials.php')) ?>#results" method="get" role="search" data-aos="fade-up">
-                    <?= $hiddenFilters(['q', 'month']) ?>
+                    <?= $hiddenFilters(['q']) ?>
                     <div class="explore-search__field">
                         <label class="visually-hidden" for="fq">Search trials</label>
                         <i class="bi bi-search explore-search__icon" aria-hidden="true"></i>
                         <input class="form-control" type="search" id="fq" name="q" maxlength="80" value="<?= e($filters['q']) ?>" placeholder="Search by medicine, keyword, hospital or trial ID…" autocomplete="off">
                     </div>
-                    <label class="visually-hidden" for="fmonth">Recruitment start month</label>
-                    <select class="form-select explore-search__month" id="fmonth" name="month">
-                        <option value="">Any start month</option>
-                        <?php foreach (TrialService::monthOptions() as $val => $label): ?>
-                            <option value="<?= e($val) ?>"<?= $filters['month'] === $val ? ' selected' : '' ?>><?= e($label) ?></option>
-                        <?php endforeach; ?>
-                    </select>
                     <button class="btn btn-navy" type="submit" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i><span class="d-none d-sm-inline ms-2">Search</span></button>
                 </form>
 

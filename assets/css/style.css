@@ -519,10 +519,8 @@ img.team-card__photo { display: block; object-fit: cover; object-position: cente
 .per-page a { min-width: 34px; padding: .2rem .5rem; border-radius: 8px; text-align: center; font-weight: 700; font-size: .9rem; color: var(--ou-navy); text-decoration: none; border: 1.5px solid var(--ou-border); background: #fff; }
 .per-page a:hover { border-color: var(--ou-orange); }
 .per-page a.active { background: var(--ou-navy); border-color: var(--ou-navy); color: #fff; }
-.explore-search { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
-.explore-search__field { position: relative; flex: 1 1 260px; min-width: 0; }
-.explore-search .explore-search__month { flex: 0 0 200px; width: 200px; border-radius: 999px; border: 1.5px solid var(--ou-border); background-color: #fff; padding-left: 1.1rem; }
-.explore-search__month:focus { border-color: var(--ou-orange); box-shadow: 0 0 0 .2rem rgba(247, 137, 28, .18); }
+.explore-search { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.explore-search__field { position: relative; flex: 1 1 auto; min-width: 0; }
 .explore-search .form-control { padding: .85rem 1rem .85rem 2.75rem; border-radius: 999px; border: 1.5px solid var(--ou-border); background: #fff; font-size: 1rem; }
 .explore-search .form-control:focus { border-color: var(--ou-orange); box-shadow: 0 0 0 .2rem rgba(247, 137, 28, .18); }
 .explore-search__icon { position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); color: var(--ou-muted); pointer-events: none; }
@@ -890,8 +888,6 @@ img.team-card__photo { display: block; object-fit: cover; object-position: cente
     .trial-card__facts { grid-template-columns: 1fr; }
     .trial-card__foot .btn { width: 100%; }
     .results-bar { flex-direction: column; align-items: stretch; }
-    .explore-search__field { flex-basis: 100%; }
-    .explore-search .explore-search__month { flex: 1 1 auto; width: auto; }
     .results-bar form { justify-content: space-between; }
     .faq-tools { flex-direction: column; align-items: stretch; }
     .faq-search { min-width: 0; }
