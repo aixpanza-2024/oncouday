@@ -57,25 +57,6 @@ require __DIR__ . '/includes/header.php';
                     <input type="hidden" name="notice_version" value="<?= e($noticeVersion) ?>">
                     <h2 class="form-card__title">Patient registration</h2>
 
-                    <div class="mb-3 maxw-age">
-                        <label class="form-label" for="pAge">Patient's age</label>
-                        <div class="input-group has-validation">
-                            <input class="form-control js-age" id="pAge" name="age" type="number" inputmode="numeric" min="0" max="120" step="1" required>
-                            <span class="input-group-text">years</span>
-                            <div class="invalid-feedback">Please enter the patient's age (0 to 120).</div>
-                        </div>
-                    </div>
-
-                    <div class="alert-guardian js-guardian" hidden>
-                        <i class="bi bi-info-circle" aria-hidden="true"></i>
-                        <span>For patients under 18, a parent or legal guardian must register and give consent on their behalf.</span>
-                    </div>
-                    <div class="mb-3 js-guardian" hidden>
-                        <label class="form-label" for="pGuardian">Parent or guardian's full name</label>
-                        <input class="form-control" id="pGuardian" name="guardian_name" type="text" maxlength="120" autocomplete="name">
-                        <div class="invalid-feedback">Please enter the parent or guardian's name.</div>
-                    </div>
-
                     <div class="mb-3">
                         <label class="form-label" for="pName"><span class="js-name-label">Full name</span></label>
                         <input class="form-control" id="pName" name="full_name" type="text" maxlength="120" autocomplete="name" required>
@@ -108,8 +89,26 @@ require __DIR__ . '/includes/header.php';
                             </select>
                             <div class="invalid-feedback">Please select a cancer type.</div>
                         </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="pAge">Patient's age</label>
+                            <div class="input-group has-validation">
+                                <input class="form-control js-age" id="pAge" name="age" type="number" inputmode="numeric" min="0" max="120" step="1" required>
+                                <span class="input-group-text">years</span>
+                                <div class="invalid-feedback">Please enter the patient's age (0 to 120).</div>
+                            </div>
+                        </div>
                     </div>
                     <p class="form-text mb-3">State and city only — we never ask for your address.</p>
+
+                    <div class="alert-guardian js-guardian" hidden>
+                        <i class="bi bi-info-circle" aria-hidden="true"></i>
+                        <span>For patients under 18, a parent or legal guardian must register and give consent on their behalf.</span>
+                    </div>
+                    <div class="mb-3 js-guardian" hidden>
+                        <label class="form-label" for="pGuardian">Parent or guardian's full name</label>
+                        <input class="form-control" id="pGuardian" name="guardian_name" type="text" maxlength="120" autocomplete="name">
+                        <div class="invalid-feedback">Please enter the parent or guardian's name.</div>
+                    </div>
 
                     <div class="consent-notice">
                         <div class="consent-notice__head">
